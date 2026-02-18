@@ -51,29 +51,19 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		For my implementation of drawing single color Triangles, I decided to follow the general formula for a Three-line test discussed in lecture. I made a helper function to calculate L, the line equation, for the 3 given points. If L == 0, I use rasterize_line between each given point. Then, I set a bounding box around the triangle, then iterate through each pixel center in the box and run a line test between the 3 lines and each point. if each line test results in a number > 0, I color the pixel. The is essentially the same as just checking every sample in a bounding box around a triangle, however just taking 1 sample per pixel to determine a color, and is therefore about the same runtime.
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+		<p>Here is a screenshot of the overall rendered image, and an upclose of one of the triangles. Right Now the thicker triangles look a lot better than the thinner ones, but overall each triangle still experiences some rough edges.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="screenshot_2_16_14-23-59.png" width="400px"/>
+				  <figcaption>test4.svg</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="screenshot_2_16_19-29-47.png" width="400px"/>
+				  <figcaption>Upclose of the Yellow Triangle.</figcaption>
 				</td>
 			  </tr>
 			</table>

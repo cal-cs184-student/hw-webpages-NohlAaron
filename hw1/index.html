@@ -58,11 +58,11 @@
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="screenshot_2_16_14-23-59.png" width="400px"/>
+				  <img src="./screenshot_2_16_14-23-59.png" width="400px"/>
 				  <figcaption>test4.svg</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="screenshot_2_16_19-29-47.png" width="400px"/>
+				  <img src="./screenshot_2_16_19-29-47.png" width="400px"/>
 				  <figcaption>Upclose of the Yellow Triangle.</figcaption>
 				</td>
 			  </tr>
@@ -74,6 +74,30 @@
 		I then changed resolve_to_framebuffer() to sum the color of each pixel in a sample, averaged it and used its mean to determine the color of the sample. Finally, I changed fill_pixel to now go through every pixel in a sample and color it in (and added guardrails for ensuring it didnt mess with the black border)
 		The significant change to rasterize_triangle() is now it will iterate through every subpixel in each pixel in the bounding box, perform the 3-line test, and color the subpixel in the sample buffer. 
 		Supersampling is very useful as it allows us to produce much sharper images by examining the entire pixel instead of basing a color off its center. Antialiasing allows for the boundary pixels to only have some subsamples color, giving it a partial color that makes edges look much smoother.
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="./screenshot_2_17_2-25-7.png" width="400px"/>
+				  <figcaption>test4.svg with sample_rate = 1</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="./screenshot_2_17_2-25-13.png" width="400px"/>
+				  <figcaption>test4.svg with sample_rate = 4</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="./screenshot_2_17_2-25-19.png" width="400px"/>
+				  <figcaption>test4.svg with sample_rate = 9</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="./screenshot_2_17_2-25-30.png" width="400px"/>
+				  <figcaption>test4.svg with sample_rate = 16</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
 
 		<h2>Task 3: Transforms</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

@@ -116,7 +116,28 @@
 			</table>
 		</div>
 		<h2>Task 4: Barycentric coordinates</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Barycentric Coordinates can be used in tandem with our previous rasterization methods to incorporate multiple colors into the rasterization process.
+		<li>Within the supersampling we can express the subpixels as a weighted sum of 3 colors: \[ (x,y) = &Alpha *A + &Beta*B + &Gamma*C \]</li>
+		<li>\[ 1 = &Alpha + &Beta + &Gamma \]</li>
+		<li>Where A, B, and C are our 3 given colors. We can then solve for &Alpha, &Beta, and &Gamma </li>
+		<li>\[&Alpha = -(px-x<sub>B</sub>)(y<sub>C</sub>-y<sub>B</sub>) + (py-y<sub>B</sub>)(x<sub>C</sub>-x<sub>B</sub>)/Area\]</li>
+		<li>\[&Beta = -(px-x<sub>C</sub>)(y<sub>A</sub>-y<sub>C</sub>) + (py-y<sub>C</sub>)(x<sub>A</sub>-x<sub>C</sub>)/Area\]</li>
+		<li>\[&Gamma = &Alpha - &Beta\]</li>
+		Where Area is the area of the shape method that we determined in Task1. The weighted sum should give us a subcolor to assign the subpixel, which will be some blend of red, green, or blue. We see this in the image below of the triangle, where I assigned each corner a color and all points in between will be varied blends of the 3 colors.
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="./screenshot_2-17_21-29-53.png" width="400px"/>
+				  <figcaption>test7.svg</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="./screenshot_2-17_21-38-48.png" width="400px"/>
+				  <figcaption>Color-Blended Triangle Variant</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div> 
 
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

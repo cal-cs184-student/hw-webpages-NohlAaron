@@ -32,7 +32,7 @@
 
 		<br>
 
-		Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-NohlAaron/">https://cal-cs184-student.github.io/hw-webpages-NohlAaron/</a>
+		Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-NohlAaron/hw1/index.html">https://cal-cs184-student.github.io/hw-webpages-NohlAaron/</a>
 		
 		<br>
 
@@ -153,8 +153,34 @@
 		</div> 
 
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+		Pixel sampling is a method to color objects through a texture map with given 2D texture coordinates over an assigned color(s).
+		This task compares the effectiveness of 2 different texture sampling methods: Nearest sampling and Bilinear Sampling. Both sampling methods will be given a level and uv coordinate, and return a texel relative to that coordinate at the given level.
+		The difference is that nearest_sampling will return the single closest texel to the coordinate at the level. Bilinear sampling will find the 4 closest sample locations to perform a bilinear interpolation. 
+		This will use the 4 points to find a point above and below the given coordinate, which can give us a more precise texel at that location. Below are a close up shots of a ninja-star like shape to show the differences in edge quality.
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="./screenshot_2-18_13-23-3.png" width="400px"/>
+				  <figcaption>Nearest Sampling with sample_rate = 1</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="./screenshot_2-18_13-24-9.png" width="400px"/>
+				  <figcaption>Bilinear Sampling with sample_rate = 1</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="./screenshot_2-18_13-25-6.png" width="400px"/>
+				  <figcaption>Nearest Sampling with sample_rate = 16</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="./screenshot_2-18_13-26-18.png" width="400px"/>
+				  <figcaption>Bilinear Sampling with sample_rate = 16</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
 		<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 

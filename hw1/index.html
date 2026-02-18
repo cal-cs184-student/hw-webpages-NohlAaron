@@ -120,10 +120,18 @@
 		Within the supersampling we can express the subpixels as a weighted sum of 3 colors: 
 		\[ (x,y) = &Alpha; *A + &Beta;*B + &Gamma;*C \]
 		\[ 1 = &Alpha; + &Beta; + &Gamma; \]
-		Where A, B, and C are our 3 given colors. We can then solve for &Alpha;, &Beta;, and &Gamma;
-		\[&Alpha; = -(px-x<sub>B</sub>)(y<sub>C</sub>-y<sub>B</sub>) + (py-y<sub>B</sub>)(x<sub>C</sub>-x<sub>B</sub>)/Area\]
-		\[&Beta; = -(px-x<sub>C</sub>)(y<sub>A</sub>-y<sub>C</sub>) + (py-y<sub>C</sub>)(x<sub>A</sub>-x<sub>C</sub>)/Area\]
-		\[&Gamma; = &Alpha - &Beta\]
+		<p>Where A, B, and C are our 3 given colors. We can then solve for α, β, and γ:</p>
+		<div style="margin-left: 1.5em; line-height: 2;">
+		<div>
+			α = [ −(p<sub>x</sub> − x<sub>B</sub>)(y<sub>C</sub> − y<sub>B</sub>) + (p<sub>y</sub> − y<sub>B</sub>)(x<sub>C</sub> − x<sub>B</sub>) ] / Area
+		</div>
+		<div>
+			β = [ −(p<sub>x</sub> − x<sub>C</sub>)(y<sub>A</sub> − y<sub>C</sub>) + (p<sub>y</sub> − y<sub>C</sub>)(x<sub>A</sub> − x<sub>C</sub>) ] / Area
+		</div>
+		<div>
+			γ = 1 − α − β
+		</div>
+		</div>
 		Where Area is the area of the shape method that we determined in Task1. The weighted sum should give us a subcolor to assign the subpixel, which will be some blend of red, green, or blue. We see this in the image below of the triangle, where I assigned each corner a color and all points in between will be varied blends of the 3 colors.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">

@@ -53,9 +53,9 @@
 		tools allow for more complex texture rendering and smoother scenes.
 
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
-		For my implementation of drawing single color Triangles, I decided to follow the general formula for a Three-line test discussed in lecture. I made a helper function to calculate L, the line equation, for the 3 given points. If L == 0, I use rasterize_line between each given point. Then, I set a bounding box around the triangle, then iterate through each pixel center in the box and run a line test between the 3 lines and each point. if each line test results in a number > 0, I color the pixel. The is essentially the same as just checking every sample in a bounding box around a triangle, however just taking 1 sample per pixel to determine a color, and is therefore about the same runtime.
+		For my implementation of drawing single color Triangles, I decided to follow the general formula for a Three-line test discussed in lecture. I made a helper function to calculate L, the line equation, for the 3 given points. If L == 0, I use rasterize_line between each given point. Then, I set a bounding box around the triangle, then iterate through each pixel center in the box and run a line test between the 3 lines and each point. if each line test results in a number > 0, I color the pixel. This is essentially the same as just checking every sample in a bounding box around a triangle, however just taking 1 sample per pixel to determine a color, and is therefore about the same runtime.
 
-		<p>Here is a screenshot of the overall rendered image, and an upclose of one of the triangles. Right Now the thicker triangles look a lot better than the thinner ones, but overall each triangle still experiences some rough edges.
+		<p>Here is a screenshot of the overall rendered image, and an upclose of one of the triangles. Right Now the thicker triangles look a lot better than the thinner ones, but overall each triangle is still drawn with rough edges.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -72,7 +72,8 @@
 		</div>
 		
 		<h2>Task 2: Antialiasing by Supersampling</h2>
-		Before implementing any supersampling, I wanted to focus on adjusting buffer memory. Now, each pixel stores N samples, where N is our sample rate. I first made significant changes to set_sample_rate() and set_framebuffer_target() by resizing sample_buffer to width * height * sample_rate. 
+		Before implementing any supersampling, I wanted to focus on adjusting buffer memory. Now, each pixel stores N samples, where N is our sample rate. I first made significant changes to set_sample_rate() and set_framebuffer_target() by resizing sample_buffer to:
+		[\width * height * sample_rate\]
 		I then changed resolve_to_framebuffer() to sum the color of each pixel in a sample, averaged it and used its mean to determine the color of the sample. Finally, I changed fill_pixel to now go through every pixel in a sample and color it in (and added guardrails for ensuring it didnt mess with the black border)
 		The significant change to rasterize_triangle() is now it will iterate through every subpixel in each pixel in the bounding box, perform the 3-line test, and color the subpixel in the sample buffer. 
 		Supersampling is very useful as it allows us to produce much sharper images by examining the entire pixel instead of basing a color off its center. Antialiasing allows for the boundary pixels to only have some subsamples color, giving it a partial color that makes edges look much smoother.
@@ -122,7 +123,7 @@
 		Within the supersampling we can express the subpixels as a weighted sum of 3 colors: 
 		\[ (x,y) = \alpha *A + \beta*B + \gamma*C \]
 		\[ 1 = \alpha; + \beta; + \gamma; \]
-		We can then solve for \alpha, \beta, and \gamma:
+		We can then solve for \( \alpha \), \( \beta \), and \( \gamma \):
 		\[
 		\alpha =
 		\frac{-(p_x - x_B)(y_C - y_B)
@@ -172,7 +173,7 @@
 		\[
 		\mathbf{p} = \mathbf{e} + \beta(\mathbf{f} - \mathbf{e})
 		\]
-		In this case, \alpha and \beta represent the offset of (u,v) within the texel, or dx and dy. Below are a close up shots of a distorted Campeneille to show the differences in edge quality.
+		In this case, \( \alpha \) and \( \beta \) represent the offset of (u,v) within the texel, or dx and dy. Below are a close up shots of a distorted Campeneille to show the differences in edge quality.
 		Notice how the overall image quality looks a lot better in the bilinear examples and the upclose pixels of the clock hands make a more distinct shape.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -201,7 +202,7 @@
 		<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
 		In the previous task, we were sampling from a mipmap level 0. Level sampling will instead sample textures to a level D, where D is a computed value that equates to the "nearest" level or the level that best matches the pixel in texture space. 
 		Each subsequent level after 0 will be lower resolution, so pulling from higher levels will reduce aliasing when textures shrink.
-		The significant implementation of this task is now when building the sampleParam, we will also find the barycentric Coordinates of (x +1, y) and (x, y + 1) and calculate dx and dy, which is the distance from the barycentric coordinates of (x,y).
+		The significant modification to our task5 algorithm is that now when building the sampleParam, we will also find the barycentric Coordinates of (x +1, y) and (x, y + 1) and calculate dx and dy, which is the distance from the barycentric coordinates of (x,y).
 		Then we compute the following partial derivatives:
 		\[
 		\frac{\partial u}{\partial x}, \quad

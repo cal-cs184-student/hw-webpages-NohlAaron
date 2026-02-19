@@ -155,10 +155,24 @@
 		</div> 
 
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
-		Pixel sampling is a method to color objects through a texture map with given 2D texture coordinates over an assigned color(s).
+		Pixel sampling is a method to get a texture color for a piece of an image given texture coordinates (u,v) at a given mipmap level.
 		This task compares the effectiveness of 2 different texture sampling methods: Nearest sampling and Bilinear Sampling. Both sampling methods will be given a level and uv coordinate, and return a texel relative to that coordinate at the given level.
 		The difference is that nearest_sampling will return the single closest texel to the coordinate at the level. Bilinear sampling will find the 4 closest sample locations to perform a bilinear interpolation. 
-		This will use the 4 points to find a point above and below the given coordinate, which can give us a more precise texel at that location. Below are a close up shots of a distorted Campeneille to show the differences in edge quality.
+		<figure>
+			<img src="./biline.png" alt="Lion" style="width:50%"/>
+			<figcaption>Bilinear Interpolation</figcaption>
+		</figure>
+		This will use the 4 points (a,b,c,d) to find a point above and below the given coordinate (e,f), which can give us a more precise texel (p) at that location. 
+		\[
+		\mathbf{e} = \mathbf{a} + \alpha(\mathbf{b} - \mathbf{a})
+		\]
+		\[
+		\mathbf{f} = \mathbf{d} + \alpha(\mathbf{c} - \mathbf{d})
+		\]
+		\[
+		\mathbf{p} = \mathbf{e} + \beta(\mathbf{f} - \mathbf{e})
+		\]
+		In this case, \alpha and \beta represent the offset of (u,v) within the texel, or dx and dy. Below are a close up shots of a distorted Campeneille to show the differences in edge quality.
 		Notice how the overall image quality looks a lot better in the bilinear examples and the upclose pixels of the clock hands make a more distinct shape.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -239,8 +253,8 @@
 			</table>
 		</div>
 		Overall, using the near level sampling reduced a lot of the aliasing, yet computationally takes more memory. 
-		On the same note, this homework shows how samples per pixel can also improve the geometry of edges, but also get computationally more complex when we increase sample sizes and will greatly increase runtimes.
+		On the same note, this homework shows how samples per pixel can also improve the geometry of edges, but also gets computationally more complex when we increase sample sizes and will greatly increase runtimes.
 		Nearest pixel sampling is the fastest and most memory efficent method for pixel sampling, but produces sharp edges and visible pixels. Bilinear pixel sampling serves to smooth out pixels within the mipmap level, yet will also slow down our runtime.
-		Ultimately, using these samples can allow us to control the image quality of different aspects of a image, where we can make certain parts of a scene stand out while taking less time and memory computing pieces that may not be as important to the overall scene.
+		Ultimately, using these techniques can allow us to control the image quality of different aspects of a image, where we can make certain parts of a scene stand out while taking less time and memory computing pieces that may not be as important to the overall scene.
 	</body>
 </html>

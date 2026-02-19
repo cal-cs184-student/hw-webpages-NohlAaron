@@ -183,7 +183,11 @@
 			</table>
 		</div>
 		<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		...
+		To highlight our current texture mapping methods, I decided to use a distorted image of Eva Unit 13 from my trip to Japan last year. I placed the pixel inspector along the shaft of the spear to highlight the differences.
+		The Sampling rate was 1 across each image. Changing between nearest and bilinear sampling will result in smoother and more distinct shapes (as shown from task5).
+		Changing from level 0 to the nearest mipmap level brings pixels making up the spear much closer in color (removed a lot of "shine") but adds a lot more rough edges. using bilinear sampling smooths it out entirely.
+		Overall, using the near level reduced the noise in a lot of the finer details of the image.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>

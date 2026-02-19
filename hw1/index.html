@@ -73,7 +73,7 @@
 		
 		<h2>Task 2: Antialiasing by Supersampling</h2>
 		Before implementing any supersampling, I wanted to focus on adjusting buffer memory. Now, each pixel stores N samples, where N is our sample rate. I first made significant changes to set_sample_rate() and set_framebuffer_target() by resizing sample_buffer to:
-		[\width * height * sample_rate\]
+		\[width * height * sample_rate\]
 		I then changed resolve_to_framebuffer() to sum the color of each pixel in a sample, averaged it and used its mean to determine the color of the sample. Finally, I changed fill_pixel to now go through every pixel in a sample and color it in (and added guardrails for ensuring it didnt mess with the black border)
 		The significant change to rasterize_triangle() is now it will iterate through every subpixel in each pixel in the bounding box, perform the 3-line test, and color the subpixel in the sample buffer. 
 		Supersampling is very useful as it allows us to produce much sharper images by examining the entire pixel instead of basing a color off its center. Antialiasing allows for the boundary pixels to only have some subsamples color, giving it a partial color that makes edges look much smoother.

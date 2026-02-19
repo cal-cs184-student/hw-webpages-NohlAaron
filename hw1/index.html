@@ -121,7 +121,7 @@
 		Barycentric Coordinates can be used in tandem with our previous rasterization methods to incorporate multiple colors into the rasterization process.
 		Within the supersampling we can express the subpixels as a weighted sum of 3 colors: 
 		\[ (x,y) = \alpha *A + \beta*B + \gamma*C \]
-		\[ 1 = &Alpha; + &Beta; + &Gamma; \]
+		\[ 1 = \alpha; + \beta; + \gamma; \]
 		We can then solve for \alpha, \beta, and \gamma:
 		\[
 		\alpha =
@@ -157,7 +157,7 @@
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
 		Pixel sampling is a method to get a texture color for a piece of an image given texture coordinates (u,v) at a given mipmap level.
 		This task compares the effectiveness of 2 different texture sampling methods: Nearest sampling and Bilinear Sampling. Both sampling methods will be given a level and uv coordinate, and return a texel relative to that coordinate at the given level.
-		The difference is that nearest_sampling will return the single closest texel to the coordinate at the level. Bilinear sampling will find the 4 closest sample locations to perform a bilinear interpolation. 
+		The difference is that nearest_sampling will return the single closest texel to the coordinate (u,v) at the level. Bilinear sampling will find the 4 closest sample locations to perform a bilinear interpolation. 
 		<figure>
 			<img src="./biline.png" alt="Lion" style="width:50%"/>
 			<figcaption>Bilinear Interpolation</figcaption>

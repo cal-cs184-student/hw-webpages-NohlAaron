@@ -214,7 +214,6 @@
 		To highlight our current texture mapping methods, I decided to use a distorted image of Eva Unit 13 from my trip to Japan last year. I placed the pixel inspector along the shaft of the spear to highlight the differences.
 		The Sampling rate was 1 across each image. Changing between nearest and bilinear sampling will result in smoother and more distinct shapes (as shown from task5).
 		Changing from level 0 to the nearest mipmap level brings pixels making up the spear much closer in color (removed a lot of "shine") but adds a lot more rough edges. using bilinear sampling smooths it out entirely.
-		Overall, using the near level reduced the noise in a lot of the finer details of the image.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -239,5 +238,9 @@
 			  </tr>
 			</table>
 		</div>
+		Overall, using the near level sampling reduced a lot of the aliasing, yet computationally takes more memory. 
+		On the same note, this homework shows how samples per pixel can also improve the geometry of edges, but also get computationally more complex when we increase sample sizes and will greatly increase runtimes.
+		Nearest pixel sampling is the fastest and most memory efficent method for pixel sampling, but produces sharp edges and visible pixels. Bilinear pixel sampling serves to smooth out pixels within the mipmap level, yet will also slow down our runtime.
+		Ultimately, using these samples can allow us to control the image quality of different aspects of a image, where we can make certain parts of a scene stand out while taking less time and memory computing pieces that may not be as important to the overall scene.
 	</body>
 </html>

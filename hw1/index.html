@@ -48,7 +48,9 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		In this homework, I've experimented with different rasterization methods for objects, utilized transform matrices to make changes to scenes, and developed pixel and level sampling algorithms for texture mapping.
+		This homework has taught me about the different ways graphic engineers render shapes and textures for objects, along with tricks used in games to give images more detail and look sharper. These different rasterization
+		tools allow for more complex texture rendering and smoother scenes.
 
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
 		For my implementation of drawing single color Triangles, I decided to follow the general formula for a Three-line test discussed in lecture. I made a helper function to calculate L, the line equation, for the 3 given points. If L == 0, I use rasterize_line between each given point. Then, I set a bounding box around the triangle, then iterate through each pixel center in the box and run a line test between the 3 lines and each point. if each line test results in a number > 0, I color the pixel. The is essentially the same as just checking every sample in a bounding box around a triangle, however just taking 1 sample per pixel to determine a color, and is therefore about the same runtime.
@@ -118,7 +120,7 @@
 		<h2>Task 4: Barycentric coordinates</h2>
 		Barycentric Coordinates can be used in tandem with our previous rasterization methods to incorporate multiple colors into the rasterization process.
 		Within the supersampling we can express the subpixels as a weighted sum of 3 colors: 
-		\[ (x,y) = &Alpha; *A + &Beta;*B + &Gamma;*C \]
+		\[ (x,y) = \alpha *A + \beta*B + \gamma*C \]
 		\[ 1 = &Alpha; + &Beta; + &Gamma; \]
 		We can then solve for \alpha, \beta, and \gamma:
 		\[
@@ -183,7 +185,32 @@
 			</table>
 		</div>
 		<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
-		...
+		In the previous task, we were sampling from a mipmap level 0. Level sampling will instead sample textures to a level D, where D is a computed value that equates to the "nearest" level or the level that best matches the pixel in texture space. 
+		Each subsequent level after 0 will be lower resolution, so pulling from higher levels will reduce aliasing when textures shrink.
+		The significant implementation of this task is now when building the sampleParam, we will also find the barycentric Coordinates of (x +1, y) and (x, y + 1) and calculate dx and dy, which is the distance from the barycentric coordinates of (x,y).
+		Then we compute the following partial derivatives:
+		\[
+		\frac{\partial u}{\partial x}, \quad
+		\frac{\partial v}{\partial x}, \quad
+		\frac{\partial u}{\partial y}, \quad
+		\frac{\partial v}{\partial y}
+		\]
+		Afterwards we plug in these values into the following equations to find L:
+		\[
+		L =
+		\max \left(
+		\sqrt{
+		\left(\frac{\partial u}{\partial x}\right)^2 +
+		\left(\frac{\partial v}{\partial x}\right)^2
+		},
+		\sqrt{
+		\left(\frac{\partial u}{\partial y}\right)^2 +
+		\left(\frac{\partial v}{\partial y}\right)^2
+		}
+		\right)
+		\]
+		\[ D = \log_2(L)\]
+		We then just pull our textures from the Dth mipmap over the 0 for nearest sampling.
 		To highlight our current texture mapping methods, I decided to use a distorted image of Eva Unit 13 from my trip to Japan last year. I placed the pixel inspector along the shaft of the spear to highlight the differences.
 		The Sampling rate was 1 across each image. Changing between nearest and bilinear sampling will result in smoother and more distinct shapes (as shown from task5).
 		Changing from level 0 to the nearest mipmap level brings pixels making up the spear much closer in color (removed a lot of "shine") but adds a lot more rough edges. using bilinear sampling smooths it out entirely.
@@ -211,20 +238,6 @@
 				</td>
 			  </tr>
 			</table>
-		</div>
-		<h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
 		</div>
 	</body>
 </html>

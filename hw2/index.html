@@ -105,13 +105,33 @@
 		We then parameterize each P<sub>i</sub> by v and use the recursive function to find point P, which is the point that lies on the Bezier surface given u and v. 
 		<figure>
 			<img src="cs184_hw2_1_8.png" alt="Teapot" style="width:50%"/>
-			<figcaption>Fully modeled Teapot</figcaption>
+			<figcaption>Fully Modeled Teapot</figcaption>
 		</figure>
 
 		<h2>Section II: Triangle Meshes and Half-Edge Data Structure</h2>
 
 		<h3>Part 3: Area-weighted vertex normals</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		For my implemented of computing the Area-weighted vertex normals at vertices, I iterate through every halfedge in the mesh, and for each iteration I grab the position of the halfedge P<sub>0</sub> and the adjacent edges, P<sub>1</sub> and P<sub>2</sub>, that form a counter clockwise triangle around the face.
+		I then compute the following cross product and sum each cross product:
+		\[
+		N = \sum_{i=1}^{n} (p_{i+1}-p_i) \times (p_{i+2}-p_i)
+		\]
+
+		Below are renders of a Teapot, where the left image uses the default flat shading, and the right image uses the phong shading method that incorporates the function
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_1.png" width="400px"/>
+				  <figcaption>Teapot with Flat Shading</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_2.png" width="400px"/>
+				  <figcaption>Teapot with Phong Shading</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
 
 		<h3>Part 4: Edge flip</h3>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

@@ -55,10 +55,7 @@
 		<h3>Part 1: Bezier curves with 1D de Casteljau subdivision</h3>
 		De Casteljau is a method meant to evaluate polynomials in a Bezier Curve. How my evaluation function works is that it takes in n points along a bezier curve, and uses linear interpolation to compute the n-1 points on the next subdivision.
 		The function follows the following equation:
-		<p>
-  			p<sub>i</sub>&prime; = lerp(p<sub>i</sub>, p<sub>i+1</sub>, t)
-  			= (1 &minus; t)p<sub>i</sub> + t p<sub>i+1</sub>
-		</p>
+		\[p_i' = \text{lerp}(p_i, p_{i+1}, t) = (1 - t)p_i + tp_{i+1}\]
 
 		<p>Here is an example on how my evaluation function works on a 6 point curve. The white points represent the original point, and the green line represents the completed bezier curve.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">

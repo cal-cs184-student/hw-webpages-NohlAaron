@@ -134,7 +134,32 @@
 		</div>
 
 		<h3>Part 4: Edge flip</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		The Edge flip operation will take a shared edge between 2 triangle pairs, and swap their shared edge to be between the isolated corners. See the image below for reference:
+		<figure>
+			<img src="edgeflip.png" alt="Teapot" style="width:50%"/>
+			<figcaption>Diagram of the edge flip operation</figcaption>
+		</figure>
+		How my implementation works is that when a shared edge is selected, I will save the 5 edges and 4 points as variables within the function, and then reassign pointers of the shared edge to be between the new shared edges.
+		Afterwards, I then reassign the neighbor points to the original shared edge and reconstruct the face cycles for both triangles to ensure they still point counter clockwise. This results in our desired output as shown above.
+		One part of my debugging journey was reassigning the twin edges along with the original edges, as only adjusting pointers and not the twins causes issues with building the new faces. To set neighbors, I used the setNeighbors()
+		function in the data structure and had to draw out a before and after of what edges and twin edges would need to be reassigned after the shared edge's reassignment. The process was a fun exercise in trialing different edges and seeing
+		what the function would draw.
+
+		<p>This is the result of my edge flip function, notice the orientation of the white line in both cases</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_3.png" width="400px"/>
+				  <figcaption>Before Flip</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_4.png" width="400px"/>
+				  <figcaption>After Flip</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
 
 		<h3>Part 5: Edge split</h3>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

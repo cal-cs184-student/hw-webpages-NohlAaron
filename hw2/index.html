@@ -40,7 +40,7 @@
 
 		<figure>
 			<img src="teapot.png" alt="Teapot" style="width:50%"/>
-			<figcaption>You can add images with captions!</figcaption>
+			<figcaption>The Teapot</figcaption>
 		</figure>
 
 		<!--
@@ -194,21 +194,94 @@
 			</table>
 		</div>
 		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>(Optional) Section III: Potential Extra Credit - Art Competition: Model something Creative</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+		Loopsubdivision is a mesh 3D upsampling algorithm that centers around first subdividing each triangle into 4 smaller triangles, and updating the vertices of the subdivided mesh according to weights.
+		<figure>
+			<img src="loopsubdivision2.png" alt="Teapot" style="width:50%"/>
+			<figcaption>Diagram of the Loop Subdivision Operation</figcaption>
+		</figure>
+		For my implementation I split this operation into 5 steps: First, given an input mesh, I compute the new position of all the vetrices in the mesh, using the subdivision rule shown in the diagram above.
+		Next, I also compute the updated position of all vertices connected to an existing edge. These steps ensure that for the actual subdivision we can go through a complete mesh instead of a series of subdivided meshes.
+		Finally, we iterate through every edge and call a split function on it, then flip any edge that connects a new and old vertex. Finally, we copy all of these computed updates to the actual vertex positions to produce the subdivided mesh.
+		<p>Here is an example of the function on our previous teapot.</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_9.png" width="400px"/>
+				  <figcaption>Teapot Before Loop Subdivision (No Grid)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_10.png" width="400px"/>
+				  <figcaption>Teapot Before Loop SubDivision (With Grid)</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_12.png" width="400px"/>
+				  <figcaption>Teapot After Loop Subdivision (No Grid)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_11.png" width="400px"/>
+				  <figcaption>Teapot After Loop Subdivision (With Grid)</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		One thing to note about the function is how it effects sharp corners and edges. See the set of images below of the function on a simple cube.
+		In these images I call the division function 3 times and each screenshot represents a different iteration of the same shape. Notice how the edges 
+		become smoother and our cube turns into a asymmetrical sphere-like object as we continue to do subloop division. 
+				<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_13.png" width="400px"/>
+				  <figcaption>Cube</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_14.png" width="400px"/>
+				  <figcaption>First Loop Subdivision</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_15.png" width="400px"/>
+				  <figcaption>Second Loop Subdivision</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_16.png" width="400px"/>
+				  <figcaption>Third loop Subdivision</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		One thing we can try to do is to preprocess the cube with edge splits and flips. I first tried using our functions from part 4 and 5 to
+		add more faces to each side of the cube, along with ensuring that the overall face layout per side is symmetrical and the same across all 6 sides.
+		This was able to greatly alleviate a lot of the asymmetry that came from the loop subdivision calls. By adding more faces, we therefore are able to make
+		more faces when a subdivision call is made, which therefore means we can construct more complex shapes without completely filleting edges and needing asymmetrical faces
+		to complete shapes. This preprocessing method was able to allow our cube to maintain a lot of symmetry and edge sharpness as we go through the subdivision.
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_17.png" width="400px"/>
+				  <figcaption>Cube (With Split and Flip Edge Calls per Side)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_18.png" width="400px"/>
+				  <figcaption>First Loop Subdivision</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_19.png" width="400px"/>
+				  <figcaption>Second Loop Subdivision</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_20.png" width="400px"/>
+				  <figcaption>Third loop SubDivision</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div> 
 		</div>
 	</body>
 </html>

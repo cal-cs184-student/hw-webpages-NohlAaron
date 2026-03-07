@@ -48,7 +48,10 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		In this homework assignment, I implement different geometric modeling algorithms discussed in class. This assignment covers the functionality of De Casteljau algorithm in evaluating Bezier Curves and Surfaces for building shapes.
+		In the second part, I experiment with different triangle mesh manipulation tools and learn how the halfedge data structure can represent triangles and more complex shapes. Finally, I built a fully functioning Loop Subdivision algorithm.
+		All of these culminate into essential tools that graphic engineers use for developing shapes, molds, and models for various projects. What I found most interesting about this assignment was working with the half edge data structure,
+		as although reassigning pointers within it can get really messy, I found it to be a super fascinating and effective data structure for representing all kinds of meshes in 3D Modeling.
 
 		<h2>Section I: Bezier Curves and Surfaces</h2>
 
@@ -99,25 +102,25 @@
 		</figure>
 
 		<h3>Part 2: Bezier surfaces with separable 1D de Casteljau</h3>
-		De Casteljau's algorithm extends seamlessly to bezier surfaces, as the transition from 2D to 3D just means that's there's an additional coordinate per controlPoint so the math is the same.
+		De Casteljau's algorithm extends seamlessly to bezier surfaces, as the transition from 2D to 3D just means that's there's an additional coordinate per control point, which leaves the math to be the exact same.
 		To implement this, I modified the original function to incorporate the third point, but instead it serves as a helper function to a recursive algorithm that will find the final point at the last subdivison.
-		Then, to build the teapot below, we consider a grid of n x n control points P<sub>ij</sub>. If we are given a parameters u and v, we parameters each row P<sub>i0</sub>,...,P<sub>i(n-1)</sub> by u then use our recursive algorithm to get the final point P<sub>i</sub> per row.
+		Then, we consider a grid of n x n control points P<sub>ij</sub>. If we are given a parameters u and v, we parameters each row P<sub>i0</sub>,...,P<sub>i(n-1)</sub> by u then use our recursive algorithm to get the final point P<sub>i</sub> per row.
 		We then parameterize each P<sub>i</sub> by v and use the recursive function to find point P, which is the point that lies on the Bezier surface given u and v. 
 		<figure>
 			<img src="cs184_hw2_1_8.png" alt="Teapot" style="width:50%"/>
-			<figcaption>Fully Modeled Teapot</figcaption>
+			<figcaption>Fully Modeled Teapot using the Bezier Surface Function</figcaption>
 		</figure>
 
 		<h2>Section II: Triangle Meshes and Half-Edge Data Structure</h2>
 
 		<h3>Part 3: Area-weighted vertex normals</h3>
-		For my implemented of computing the Area-weighted vertex normals at vertices, I iterate through every halfedge in the mesh, and for each iteration I grab the position of the halfedge P<sub>0</sub> and the adjacent edges, P<sub>1</sub> and P<sub>2</sub>, that form a counter clockwise triangle around the face.
+		For my implementation of computing the area-weighted vertex normals at vertices, I iterate through every halfedge in the mesh. For each iteration I grab the position of the halfedge P<sub>0</sub> and the adjacent edges, P<sub>1</sub> and P<sub>2</sub>, that form a counter clockwise triangle around the face.
 		I then compute the following cross product and sum each cross product:
 		\[
 		N = \sum_{i=1}^{n} (p_{i+1}-p_i) \times (p_{i+2}-p_i)
 		\]
 
-		Below are renders of a Teapot, where the left image uses the default flat shading, and the right image uses the phong shading method that incorporates the function
+		<p>Below are renders of a teapot, where the left image uses the default flat shading, and the right image uses the phong shading method that incorporates the function.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -134,7 +137,7 @@
 		</div>
 
 		<h3>Part 4: Edge flip</h3>
-		The Edge flip operation will take a shared edge between 2 triangle pairs, and swap their shared edge to be between the isolated corners. See the image below for reference:
+		The edge flip operation will take a shared edge between 2 triangle pairs, and swap their shared edge to be drawn between the isolated corners. See the image below for reference:
 		<figure>
 			<img src="edgeflip.png" alt="Teapot" style="width:50%"/>
 			<figcaption>Diagram of the Edge Flip Operation</figcaption>
@@ -145,7 +148,7 @@
 		function in the data structure and had to draw out a before and after of what edges and twin edges would need to be reassigned after the shared edge's reassignment. The process was a fun exercise in trialing different edges and seeing
 		what the function would draw.
 
-		<p>This is the result of my edge flip function, notice the orientation of the white line in both cases</p>
+		<p>This is the result of my edge flip function, notice the orientation of the white line in both cases.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -162,13 +165,13 @@
 		</div>
 
 		<h3>Part 5: Edge split</h3>
-		The Split Edge operation will take a shared edge between a given pair of 2 triangles, but instead will insert a vetex m in the middle of the shared edge, which is then also connected to the isolated corners. This turns the triangle pair into 4 smaller triangles. see the image below for reference:
+		The split edge operation will take a shared edge between a given pair of 2 triangles, but instead will insert a vertex m in the middle of the shared edge, which is then also connected to the isolated corners. This turns the triangle pair into 4 smaller triangles. see the image below for reference:
 		<figure>
 			<img src="splitedge.png" alt="Teapot" style="width:50%"/>
 			<figcaption>Diagram of the Split Edge Operation</figcaption>
 		</figure>
-		For the cases where we don't have a boundary edge selected, I create a new vertex variable m and set it's position to be the midpoint between points b and c. Then, to construct to additional 2 triangles, I create 2 new face instances, along with 3 edge instances, and 6 half edge instances.
-		Afterwards is using the built-in setNeighbors() function to construct the new faces and reassign the vertices and edges that comprise the existing 2 faces. Below is a series of screenshots of me using the split edge feature, along with the flip edge function from earlier:
+		For the cases where we don't have a boundary edge selected, I create a new vertex variable m and set its position to be the midpoint between points b and c. Next, in order to construct to additional 2 triangles, I create 2 new face instances, along with 3 edge instances, and 6 half edge instances.
+		I utilize the built-in setNeighbors() function to construct the new faces and reassign the vertices and edges that comprise the existing 2 faces. Below is a series of screenshots of me using the split edge feature, along with the flip edge function from earlier:
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -194,14 +197,14 @@
 			</table>
 		</div>
 		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
-		Loopsubdivision is a mesh 3D upsampling algorithm that centers around first subdividing each triangle into 4 smaller triangles, and updating the vertices of the subdivided mesh according to weights.
+		Loop subdivision is a mesh 3D upsampling algorithm that centers around first subdividing each triangle into 4 smaller triangles, and updating the vertices of the subdivided mesh according to weights.
 		<figure>
 			<img src="loopsubdivision2.png" alt="Teapot" style="width:50%"/>
 			<figcaption>Diagram of the Loop Subdivision Operation</figcaption>
 		</figure>
 		For my implementation I split this operation into 5 steps: First, given an input mesh, I compute the new position of all the vetrices in the mesh, using the subdivision rule shown in the diagram above.
-		Next, I also compute the updated position of all vertices connected to an existing edge. These steps ensure that for the actual subdivision we can go through a complete mesh instead of a series of subdivided meshes.
-		Finally, we iterate through every edge and call a split function on it, then flip any edge that connects a new and old vertex. Finally, we copy all of these computed updates to the actual vertex positions to produce the subdivided mesh.
+		Next, I also compute the updated position of all vertices connected to an existing edge. These steps ensure that for the actual subdivision I can go through a complete mesh instead of a series of subdivided meshes.
+		Finally, I iterate through every edge and call a split function on it, then flip any edge that connects a new and old vertex. When all computations are complete, I copy all of these computed updates to the actual vertex positions to produce the subdivided mesh.
 		<p>Here is an example of the function on our previous teapot.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -229,7 +232,7 @@
 		</div>
 		One thing to note about the function is how it effects sharp corners and edges. See the set of images below of the function on a simple cube.
 		In these images I call the division function 3 times and each screenshot represents a different iteration of the same shape. Notice how the edges 
-		become smoother and our cube turns into a asymmetrical sphere-like object as we continue to do subloop division. 
+		become uneven and our cube turns into a asymmetrical sphere-like object as we continue to do subloop division. 
 				<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -254,11 +257,12 @@
 			  </tr>
 			</table>
 		</div>
-		One thing we can try to do is to preprocess the cube with edge splits and flips. I first tried using our functions from part 4 and 5 to
-		add more faces to each side of the cube, along with ensuring that the overall face layout per side is symmetrical and the same across all 6 sides.
+		One thing we can try to do is to preprocess the cube with edge splits and flips. I first tried using our functions from parts 4 and 5 to
+		add more faces to each side of the cube, along with ensuring that the overall face layout per side is symmetrical. THis shape is the same across all 6 sides.
 		This was able to greatly alleviate a lot of the asymmetry that came from the loop subdivision calls. By adding more faces, we therefore are able to make
 		more faces when a subdivision call is made, which therefore means we can construct more complex shapes without completely filleting edges and needing asymmetrical faces
-		to complete shapes. This preprocessing method was able to allow our cube to maintain a lot of symmetry and edge sharpness as we go through the subdivision.
+		to complete shapes. This preprocessing method was able to allow our cube to maintain a lot of symmetry and edge sharpness as we go through the subdivision. The idea is to essentially
+		give more faces for a shape to construct itself with.
 		<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
@@ -277,7 +281,7 @@
 				</td>
 				<td style="text-align: center;">
 				  <img src="cs184_hw2_2_20.png" width="400px"/>
-				  <figcaption>Third loop SubDivision</figcaption>
+				  <figcaption>Third loop Subdivision</figcaption>
 				</td>
 			  </tr>
 			</table>

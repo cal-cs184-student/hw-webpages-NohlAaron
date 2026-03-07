@@ -137,7 +137,7 @@
 		The Edge flip operation will take a shared edge between 2 triangle pairs, and swap their shared edge to be between the isolated corners. See the image below for reference:
 		<figure>
 			<img src="edgeflip.png" alt="Teapot" style="width:50%"/>
-			<figcaption>Diagram of the edge flip operation</figcaption>
+			<figcaption>Diagram of the Edge Flip Operation</figcaption>
 		</figure>
 		How my implementation works is that when a shared edge is selected, I will save the 5 edges and 4 points as variables within the function, and then reassign pointers of the shared edge to be between the new shared edges.
 		Afterwards, I then reassign the neighbor points to the original shared edge and reconstruct the face cycles for both triangles to ensure they still point counter clockwise. This results in our desired output as shown above.
@@ -162,8 +162,37 @@
 		</div>
 
 		<h3>Part 5: Edge split</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+		The Split Edge operation will take a shared edge between a given pair of 2 triangles, but instead will insert a vetex m in the middle of the shared edge, which is then also connected to the isolated corners. This turns the triangle pair into 4 smaller triangles. see the image below for reference:
+		<figure>
+			<img src="splitedge.png" alt="Teapot" style="width:50%"/>
+			<figcaption>Diagram of the Split Edge Operation</figcaption>
+		</figure>
+		For the cases where we don't have a boundary edge selected, I create a new vertex variable m and set it's position to be the midpoint between points b and c. Then, to construct to additional 2 triangles, I create 2 new face instances, along with 3 edge instances, and 6 half edge instances.
+		Afterwards is using the built-in setNeighbors() function to construct the new faces and reassign the vertices and edges that comprise the existing 2 faces. Below is a series of screenshots of me using the split edge feature, along with the flip edge function from earlier:
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_5.png" width="400px"/>
+				  <figcaption>Teapot Before First Split</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_6.png" width="400px"/>
+				  <figcaption>Teapot After First Split</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_7.png" width="400px"/>
+				  <figcaption>Teapot After a Flip Call</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw2_2_8.png" width="400px"/>
+				  <figcaption>Teapot After a Second Split</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
 		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 

@@ -27,13 +27,13 @@
 	</head>
 	<body>
 		<div class="container">
-		<h1>CS184/284A Spring 2025 Homework 3 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<h1>CS184/284A Spring 2026 Homework 3 Write-Up</h1>
+		<div style="text-align: center;">Names: Nohl Abdelhadi </div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage:  <a href="https://cal-cs184-student.github.io/hw-webpages-NohlAaron/hw3/index.html">https://cal-cs184-student.github.io/hw-webpages-NohlAaron/hw3/index.html</a>
+		Link to GitHub repository:  <a href="https://github.com/cal-cs184-student/hw3-pathtracer-nohlaaron">https://github.com/cal-cs184-student/hw3-pathtracer-nohlaaron</a>
 		
 		<figure>
 			<img src="cornell.png" alt="Cornell Boxes with Bunnies" style="width:70%"/>
@@ -48,29 +48,36 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		The main idea of our ray generation method is that for any given normalized coordinates, we first translate to camera space, then generate the ray in camera space, and finally transform the ray into world space.
+		To do this, first we define an axis aligned virtual camera sensor and use hFov and vFov, the field of the view angles along the X and Y axis. we can set the bottom left and top right corners using the following:
+		\[ ws = tan(hFov/2), hs =  tan(vFov/2)\]
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+		Afterwards we will define the following ray then use the camera sensor's camera-to-world rotation matrix to transform it:
+		\[ ((2x - 1)ws, (2y-1)hs, -1)\]
+
+		...
+
+		<p>Below are examples of a few small .dae files that I rendered using the triangle and sphere intersection methods.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="CBempty.png" width="400px"/>
+				  <figcaption>Empty Room</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="CBspheres.png" width="400px"/>
+				  <figcaption>Room with 2 Gpheres</figcaption>
 				</td>
 			  </tr>
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="CBgems.png" width="400px"/>
+				  <figcaption>Room with 3 Gems</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="cube.png" width="400px"/>
+				  <figcaption>Front Face of Cube</figcaption>
 				</td>
 			  </tr>
 			</table>

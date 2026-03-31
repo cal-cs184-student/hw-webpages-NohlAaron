@@ -37,7 +37,7 @@
 		
 		<figure>
 			<img src="cornell.png" alt="Cornell Boxes with Bunnies" style="width:70%"/>
-			<figcaption>You can add images with captions!</figcaption>
+			<figcaption>Bunnies!</figcaption>
 		</figure>
 
 		<!--
@@ -50,12 +50,58 @@
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
 		The main idea of our ray generation method is that for any given normalized coordinates, we first translate to camera space, then generate the ray in camera space, and finally transform the ray into world space.
 		To do this, first we define an axis aligned virtual camera sensor and use hFov and vFov, the field of the view angles along the X and Y axis. we can set the bottom left and top right corners using the following:
-		\[ ws = tan(hFov/2), hs =  tan(vFov/2)\]
+		\[ ws = tan(hFov/2), hs =  tan(vFov/2) \]
 
 		Afterwards we will define the following ray then use the camera sensor's camera-to-world rotation matrix to transform it:
 		\[ ((2x - 1)ws, (2y-1)hs, -1)\]
 
-		...
+		For the triangle intersection algorithm, consider a ray written out as the following:
+		\[r(t) = o + td\]
+		Where o is the origin of the ray and d is the direction of the ray. The idea is to solve for u, v, and t variable such that:
+		\[0 \leq u \leq 1\]
+		\[v > 0]
+		\[u + v \leq 1\]
+		\[\text{min\_t} < t < \text{min\_t}\]
+
+		<p>
+		To find \(u\), \(v\), and \(t\), we write the intersection point on the triangle using barycentric coordinates:
+		</p>
+
+		<p>
+		\[ p = (1-u-v)p_1 + up_2 + vp_3 \]
+		</p>
+
+		<p>
+		Since the same point must also lie on the ray, we set:
+		</p>
+
+		<p>
+		\[ o + td = (1-u-v)p_1 + up_2 + vp_3 \]
+		</p>
+
+		<p>
+		Rearranging gives:
+		</p>
+		<p>
+		\[ o - p_1 = u(p_2 - p_1) + v(p_3 - p_1) - td \]
+		</p>
+		<p>
+		This can be written as a linear system:
+		</p>
+
+		<p>
+		\[
+		\begin{bmatrix}
+		p_2 - p_1 & p_3 - p_1 & -d
+		\end{bmatrix}
+		\begin{bmatrix}
+		u \\ v \\ t
+		\end{bmatrix}
+		=
+		o - p_1
+		\]
+		</p>
+		Solving this system will give us the values for u, v, and t.
 
 		<p>Below are examples of a few small .dae files that I rendered using the triangle and sphere intersection methods.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">

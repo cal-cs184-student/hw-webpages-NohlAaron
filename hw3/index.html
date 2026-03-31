@@ -101,7 +101,7 @@
 		o - p_1
 		\]
 		</p>
-		Solving this system will give us the values for u, v, and t.
+		Solving this system will give us the values for \(u\), \(v\), and \(t\).
 
 		<p>Below are examples of a few small .dae files that I rendered using the triangle and sphere intersection methods.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
@@ -130,8 +130,33 @@
 		</div>
 		
 		<h2>Part 2: Bounding Volume Hierarchy</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		To build a Bounding Volume Hierarchy (BVH) instance, I use a recursive function that takes a range of primitives and the maximum leaf size configuration.
+		The algorithm will first build a bounding box, encloses all primitives in the given range, then create a BVH node in the bounding box. For the Base Case, if the given range of primitives are less than
+		the maximum leaf size (or making a leaf node), the node's children are set to null and is returned. The splitting heuristic will take a centroid bounding box, and take a 3D vector of its range, then split on
+		the highest value axis on that range. This represents the axis with the most varied points. The primitives are paritioned around the midpoint along the axis into the left and right subsets,
+		and a recursive call is made on both of the node's children and the max range set to the midpoint.
+		<p>The following images are large files that traditionally would take several minutes to render, but with BVH take only a few seconds</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="CBlucy.png" width="400px"/>
+				  <figcaption>CBlucy.dae (17,828 KB)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="CBmanplanck.png" width="400px"/>
+				  <figcaption>manplanck.dae (3,343 KB)</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		To highlight the improvement that the BVH makes, below is an image of a rendered Cow. The dae file of this cow is about 358 KB large. Traditonally, rendering this would take about 40 seconds.
+		However, incorporating BVH into our rendering pipeline takes 0.1223 seconds to do. That is about a 99.7% improvement!
 
+		<figure>
+			<img src="cow.png" alt="Cornell Boxes with Bunnies" style="width:70%"/>
+			<figcaption>cow.dae (358 KB)</figcaption>
+		</figure>
 		<h2>Part 3: Direct Illumination</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 

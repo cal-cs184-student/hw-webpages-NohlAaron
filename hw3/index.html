@@ -166,7 +166,50 @@
 		</p>
 		For every sample in the scene, I will uniformly sample the 3D vector representing a light direction, transfer to world coordinates, create its corresponding shadow ray, and check if the shadow is occluded.
 		If so, we'll calculate it's BSDF contribution and average all the samples at the end.
-		<p>The next method was direct lighting by sampling the "importance" of lights, or sampling only the light directions that hit a point p...</p>
+		<p>The next method was direct lighting by sampling the "importance" of lights, or sampling only the light directions that hit a point p. The previous method will lead to a noisy output, so the purpose of sampling 
+			by importance is to eliminate noisy features by only considering the light directions that will actually reach a hit point. First we find the 3D vector that's between the light source and hit point,
+			transfer that to the world coordinates. Then we create the corresponding shadow but instead only calculate the BSDF contribution if the shadow is not occluded.
+		</p>
+		<p>The following images are the same scene, but one uses the hemisphere sampling whereas the other uses the importance sampling.</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="CBunny_H_64_32.png" width="400px"/>
+				  <figcaption>Bunny in Room (Hemisphere Sampling)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="bunny_64_32.png" width="400px"/>
+				  <figcaption>Bunny in Room (Importance Sampling)</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		<p>For the Light Importance Sampling, I also took the same scene and rendered 4 additional versions. Each version has 1 sample per pixel, but vary in number of light rays:</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="task3_1_1.png" width="400px"/>
+				  <figcaption>1 Light Ray</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="task3_4_1.png" width="400px"/>
+				  <figcaption>4 Light Rays</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="task3_16_1.png" width="400px"/>
+				  <figcaption>16 Light Rays</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="task3_64_1.png" width="400px"/>
+				  <figcaption>64 Light Rays</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
 
 		<h2>Part 4: Global Illumination</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

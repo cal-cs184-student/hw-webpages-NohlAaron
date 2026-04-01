@@ -161,8 +161,7 @@
 		Next, I implemented 2 different versions of a direct illumination function for introducing light sources into scenes. The first method is a direct lighting function that uses uniform hemisphere sampling.
 		The central idea is to sample incoming light directions uniformly in a hemisphere above the object surface and using Monte Carlo Estimation to calculate each sample's BSDF contribution and average across all samples to find our outgoing illumination vector.
 		<p>
-		L<sub>out</sub> = (2&pi; / N) &Sigma;<sub>i=1</sub><sup>N</sup> 
-		[ f(w<sub>out</sub>, w<sub>i</sub>) L<sub>i</sub> cos(&theta;<sub>i</sub>) ]
+		[\L<sub>out</sub> = (2&pi; / N) &Sigma;<sub>i=1</sub><sup>N</sup> * f(w<sub>out</sub>, w<sub>i</sub>) L<sub>i</sub> cos(&theta;<sub>i</sub>) \]
 		</p>
 		For every sample in the scene, I will uniformly sample the 3D vector representing a light direction, transfer to world coordinates, create its corresponding shadow ray,....
 

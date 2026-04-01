@@ -175,7 +175,7 @@
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="CBunny_H_64_32.png" width="400px"/>
+				  <img src="CBbunny_H_64_32.png" width="400px"/>
 				  <figcaption>Bunny in Room (Hemisphere Sampling)</figcaption>
 				</td>
 				<td style="text-align: center;">
@@ -210,6 +210,10 @@
 			  </tr>
 			</table>
 		</div>
+		The significant difference between the hemisphere and light sampling is the amount of noise. Due to the hemisphere sampling selecting uniformly at random,
+		it will incorporate a lot of random noise vectors, which leads to a "fuzzier" image quality (the black spots all over the scene). Light sampling will only consider
+		light directions that make contact with a surface, therefore eliminating the random patches of black in the image and producing a clearer scene. Where hemisphere sampling excels
+		is that it will work for all lighting types and will produce a unbiased estimate of radiance, however for scene creation the light sampling is the better choice.
 
 		<h2>Part 4: Global Illumination</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

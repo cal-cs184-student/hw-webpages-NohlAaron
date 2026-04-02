@@ -217,7 +217,29 @@
 		is that it will work for all lighting types and will produce a unbiased estimate of radiance, however for scene creation the light sampling is the better choice.
 
 		<h2>Part 4: Global Illumination</h2>
-		To extend the previous part regarding direct illumination methods, this part centers on Global illumination.
+		To extend the previous part regarding direct illumination methods, this part centers on Global illumination which we now also account for indirect illumination. 
+		First I made a new sampling method that not only returns the proportion of incoming light scattered from
+		an indicent direction to an outgoing direction, but also updates the Probability Density Function (PDF) of the sample. This lets us calculate the unbiased Monte Carlo Estimation for indirect lighting:
+		<div style="text-align:center; margin: 12px 0;">
+		<i>L</i><sub>o</sub>(p, &omega;<sub>o</sub>) = <i>L</i><sub>e</sub>(p, &omega;<sub>o</sub>) +
+		&int;<sub>&Omega;</sub>
+		<i>f</i><sub>r</sub>(&omega;<sub>o</sub>, &omega;<sub>i</sub>)
+		<i>L</i><sub>i</sub>(p, &omega;<sub>i</sub>)
+		cos(&theta;<sub>i</sub>) d&omega;<sub>i</sub>
+		</div>
+
+		<div style="text-align:center; margin: 12px 0;">
+		<i>L</i><sub>o</sub> &asymp; <i>L</i><sub>e</sub> +
+		(
+		<i>f</i><sub>r</sub>(&omega;<sub>o</sub>, &omega;<sub>i</sub>)
+		<i>L</i><sub>i</sub>(&omega;<sub>i</sub>)
+		cos(&theta;<sub>i</sub>)
+		) / pdf(&omega;<sub>i</sub>)
+		</div>
+		Then I develop a recursive function that will now also account for whether we want light to accumulate to a max depth. For a base case,
+		we use the previous one bounce radiance method from the last part if the ray depth is 0 or 1. Otherwise we use our new sampling function to get a new direction, transfer that to world space,
+		spawn a new ray from the hit point in this direction, recursively evaluate the incoming radiance from that ray, and finally Weight the contribution using the BSDF, cosine term, and PDF. 
+		If we want light to accumulate, we will sum up each vector returned from the recursive calls, otherwise we return the final vector returned.
 		<p>Below highlights a short example between direct and indirect illumination with the Sphere Scene</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -233,62 +255,81 @@
 			  </tr>
 			</table>
 		</div>
-		<p>Here is a comparsion of CBunny.dae between different max depths and accumulation bounce settings</p>
+		<p>Here is a comparsion of CBunny.dae between different max depths and accumulation bounce settings
+			Notice for the 2 max depth images is when the bounce accumulation starts to considerably change the output. Incoporating bounce accumulations
+			leads to an overall brighter scene, however took much longer to render. These differences are more noticable as we move upward to 3 bounces, as the
+			no accumulation bounce scene is even dimmer, and the accumulation bounce scene is even brighter. These images took longer to render than the 2nd bounce images as well.
+			Overall, increasing the ray depth and including bounce accumulation leads to a brighter light source that unbiasedly lights the scene.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_0_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 0, accmulation bounces = False)</figcaption>
+						<figcaption>CBbunny.dae (max depth = 0, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_0_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 0, accmulation bounces = True)</figcaption>
+						<figcaption>CBbunny.dae (max depth = 0, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_1_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 1, accmulation bounces = False)</figcaption>
+						<figcaption>CBbunny.dae (max depth = 1, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_1_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 1, accmulation bounces = True)</figcaption>
+						<figcaption>CBbunny.dae (max depth = 1, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_2_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 2, accmulation bounces = False)</figcaption>
+						<figcaption>CBbunny.dae (max depth = 2, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_2_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 2, accmulation bounces = True)</figcaption>
+						<figcaption>CBbunny.dae (max depth = 2, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_3_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 3, accmulation bounces = False)</figcaption>
+						<figcaption>CBbunny.dae (max depth = 3, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_3_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 3, accmulation bounces = True)</figcaption>
+						<figcaption>CBbunny.dae (max depth = 3, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
-								<tr>
+				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_4_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 4, accmulation bounces = False)</figcaption>
+						<figcaption>CBbunny.dae (max depth = 4, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_4_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 4, accmulation bounces = True)</figcaption>
+						<figcaption>CBbunny.dae (max depth = 4, Accumulation Bounces On)</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="task4_CB_F_5_1024.png" width="400px"/>
+						<figcaption>CBbunny.dae (max depth = 5, Accumulation Bounces Off)</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="task4_CB_T_5_1024.png" width="400px"/>
+						<figcaption>CBbunny.dae (max depth = 5, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
 			</table>
 		</div>
-		<p>Here is CBunny.dae using Russian Roulette global illumination with different max depths</p>
+		<p>Here is CBunny.dae using Russian Roulette global illumination with different max depths. The Russian Roulette algorithm differs from
+			our traditional global illumination method, as it now incoporates random termination of rays depending on a constant probability. At each bounce beyond a certain depth,
+			a ray will be terminated with probability p. If a ray is not terminated, it's intensity is increased to compensate for the loss of rays.
+			This reduces the computation time from the previous method, while still maintaining its ability to light a scene without bias. For these images, I use a termination probability of 0.4 or 40% of samples.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 				<tr>

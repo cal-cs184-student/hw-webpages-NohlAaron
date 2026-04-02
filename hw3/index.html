@@ -210,13 +210,94 @@
 			  </tr>
 			</table>
 		</div>
+		
 		The significant difference between the hemisphere and light sampling is the amount of noise. Due to the hemisphere sampling selecting uniformly at random,
 		it will incorporate a lot of random noise vectors, which leads to a "fuzzier" image quality (the black spots all over the scene). Light sampling will only consider
 		light directions that make contact with a surface, therefore eliminating the random patches of black in the image and producing a clearer scene. Where hemisphere sampling excels
 		is that it will work for all lighting types and will produce a unbiased estimate of radiance, however for scene creation the light sampling is the better choice.
 
 		<h2>Part 4: Global Illumination</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		To extend the previous part regarding direct illumination methods, this part centers on Global illumination.
+		<p>Below highlights a short example between direct and indirect illumination with the Sphere Scene</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="task4_DI.png" width="400px"/>
+				  <figcaption>Direct Lighting on Spheres (1024 samples)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="task4_IDI.png" width="400px"/>
+				  <figcaption>Indirect Lighting on Spheres (1024 samples)</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		<p>Here is a comparsion of CBunny.dae between different max depths and accumulation bounce settings</p>
+		<p>Here is CBunny.dae using Russian Roulette global illumination with different max depths</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+						<img src="task4_CBRR_0_1024.png" width="400px"/>
+						<figcaption>CBbunny with Russian Roulette (max depth = 0)</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="task4_CBRR_1_1024.png" width="400px"/>
+						<figcaption>CBbunny with Russian Roulette (max depth = 1)</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">
+						<img src="task4_CBRR_2_1024.png" width="400px"/>
+						<figcaption>CBbunny with Russian Roulette (max depth = 2)</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="task4_CBRR_2_1024.png" width="400px"/>
+						<figcaption>CBbunny with Russian Roulette (max depth = 3)</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<p>Here are additional examples on the Sphere room with different sample-per-pixel rates. 4 light rays are used across each image below.</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="task4_RR_1_4.png" width="400px"/>
+				  <figcaption>Indirect Lighting on Spheres (1 Sample)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="task4_RR_2_4.png" width="400px"/>
+				  <figcaption>Indirect Lighting on Spheres (2 samples)</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="task4_RR_4_4.png" width="400px"/>
+				  <figcaption>Direct Lighting on Spheres (4 samples)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="task4_RR_8_4.png" width="400px"/>
+				  <figcaption>Indirect Lighting on Spheres (8 samples)</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="task4_RR_16_4.png" width="400px"/>
+				  <figcaption>Direct Lighting on Spheres (16 samples)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="task4_RR_64_4.png" width="400px"/>
+				  <figcaption>Indirect Lighting on Spheres (64 samples)</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		<figure>
+			<img src="task4_RR_1024_4.png" alt="Cornell Boxes with Bunnies" style="width:70%"/>
+			<figcaption>Indirect Lighting on Spheres (1024 samples)</figcaption>
+		</figure>
 
 		<h2>Part 5: Adaptive Sampling</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

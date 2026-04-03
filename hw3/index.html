@@ -45,7 +45,9 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		In this homework, I develop many of the core components for physically based renderers and pathtracing algorithms. Some of the main ideas covered in this assignment are ray-scene intersection, acceleration structures, and physically based lighting and materials.
+		This webpage covers my results regarding a BVH data structure, direct and indirect illumination methods, and techniques used by renderers to reduce rendering time and noise within scenes.
+		The results consist of realistic and clear images of scenes and physical shapes. What I found most interesting are the adaptive sampling techniques utilized at the end of this assignment to reduce noise, as it featured more statistics concepts than what I was expecting.
 
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
 		The main idea of our ray generation method is that for any given normalized coordinates, we first translate to camera space, then generate the ray in camera space, and finally transform the ray into world space.
@@ -405,7 +407,41 @@
 		</figure>
 
 		<h2>Part 5: Adaptive Sampling</h2>
-		
+		One big problem with the current global illumination methods is the noise that they can generate. One way to conteract this is to decrease the number of samples per pixel. However, some pixels will actually converge faster
+		than other pixels, so we don't have to do this for every pixel. Adaptive sampling is the solution to high sample counts for pixels, and concentrating samples in the more difficult parts of the image.
+		To implement this, I modified the raytrace pixel method discussed in part 1 to calculate the mean (&mu;) and standard deviation (&sigma;) using variables s1 and s2:
+		<p>
+		$$
+		s_1 = \sum_{k=1}^{n} x_k
+		$$
+		</p>
+
+		<p>
+		$$
+		s_2 = \sum_{k=1}^{n} x_k^2
+		$$
+		</p>
+		<p>
+		x_k is the illuminance of sample k that was already found from part 1. Using these values, I compute the sample mean (&mu;) and variance (&sigma;<sup>2</sup>) as:
+		</p>
+		<div style="text-align: center; font-size: 20px;">
+		&mu; = s<sub>1</sub> / n
+		</div>
+		<div style="text-align: center; font-size: 20px;">
+		&sigma;<sup>2</sup> = (1 / (n - 1)) (s<sub>2</sub> - (s<sub>1</sub><sup>2</sup> / n))
+		</div>
+		<p>
+		Every <code>samplesPerBatch</code> samples, I estimate the confidence interval of the pixel using:
+		</p>
+		<div style="text-align: center; font-size: 20px;">
+		I = 1.96 * (&sigma; / &radic;n)
+		</div>
+		This gives a 95% confidence interval for the estimated pixel value. If the interval is sufficiently small relative to the mean (i.e., I &lt;= maxTolerance * &mu;), then the pixel is considered to have converged and sampling stops early.
+		Sampling continues until the convergence threshold is met or the maximum number of samples is reached. The Pixel color is set to the computed mean, and the number of samples is recorded for visualization.
+
+		<p>The following images are 2 example scenes, a dragon and coil in the room. The images to the right represent the sample rate of both scenes. Red represents a high sampling rate and green represent low sampling rates.
+			Both scenes use 2048 samples per pixel, 1 sample per light, and a max ray depth of 5.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -425,16 +461,13 @@
 				</td>
 				<td style="text-align: center;">
 				  <img src="task5_coil_rate.png" width="400px"/>
-				  <figcaption>CBcoil.dae</figcaption>
+				  <figcaption>CBcoil.dae(Sampling Rate)</figcaption>
 				</td>
 			  </tr>
 			</table>
 		</div>
 
-		<h2>(Optional) Part 6: Extra Credit Opportunities</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-		
-		
+				
 		</div>
 	</body>
 </html>

@@ -47,19 +47,19 @@
 		<h2>Overview</h2>
 		In this homework, I develop many of the core components for physically based renderers and pathtracing algorithms. Some of the main ideas covered in this assignment are ray-scene intersection, acceleration structures, and physically based lighting and materials.
 		This webpage covers my results regarding a BVH data structure, direct and indirect illumination methods, and techniques used by renderers to reduce rendering time and noise within scenes.
-		The results consist of realistic and clear images of scenes and physical shapes. What I found most interesting are the adaptive sampling techniques utilized at the end of this assignment to reduce noise, as it featured more statistics concepts than what I was expecting.
+		The results consist of realistic and clear images of scenes and physical shapes. What I found most interesting are the adaptive sampling techniques utilized at the end of this assignment to reduce noise, as it featured more statistics concepts than what I was
 
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
 		The main idea of our ray generation method is that for any given normalized coordinates, we first translate to camera space, then generate the ray in camera space, and finally transform the ray into world space.
-		To do this, first we define an axis aligned virtual camera sensor and use hFov and vFov, the field of the view angles along the X and Y axis. we can set the bottom left and top right corners using the following:
+		To do this, first we define an axis aligned virtual camera sensor and use hFov and vFov, the field of the view angles along the X and Y axis. We set the bottom left and top right corners using the following:
 		\[ ws = tan(hFov/2), hs =  tan(vFov/2) \]
 
-		Afterwards we will define the following ray then use the camera sensor's camera-to-world rotation matrix to transform it:
+		Afterwards we will define the following ray then use acamera-to-world rotation matrix obtained from the camera sensor to transform it:
 		\[ ((2x - 1)ws, (2y-1)hs, -1)\]
 
 		For the triangle intersection algorithm, consider a ray written out as the following:
 		\[r(t) = o + td\]
-		Where o is the origin of the ray and d is the direction of the ray. The idea is to solve for u, v, and t variable such that:
+		Where \(o\) is the origin of the ray and \(d\) is the direction of the ray. The idea is to solve for \(u\), \(v\), and \(t\) variable such that:
 		\[0 \leq u \leq 1\]
 		\[v > 0\]
 		\[u + v \leq 1\]
@@ -133,10 +133,10 @@
 		
 		<h2>Part 2: Bounding Volume Hierarchy</h2>
 		To build a Bounding Volume Hierarchy (BVH) instance, I use a recursive function that takes a range of primitives and the maximum leaf size configuration.
-		The algorithm will first build a bounding box, encloses all primitives in the given range, then create a BVH node in the bounding box. For the Base Case, if the given range of primitives are less than
+		The algorithm will first build a bounding box, encloses all primitives in the given range, then create a BVH node in the bounding box. For the base case, if the given range of primitives are less than
 		the maximum leaf size (or making a leaf node), the node's children are set to null and is returned. The splitting heuristic will take a centroid bounding box, and take a 3D vector of its range, then split on
 		the highest value axis on that range. This represents the axis with the most varied points. The primitives are paritioned around the midpoint along the axis into the left and right subsets,
-		and a recursive call is made on both of the node's children and the max range set to the midpoint.
+		and a recursive call is made on both of the node's children and the max range is set to the midpoint.
 		<p>The following images are large files that traditionally would take several minutes to render, but with BVH take only a few seconds</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -152,8 +152,8 @@
 			  </tr>
 			</table>
 		</div>
-		To highlight the improvement that the BVH makes, below is an image of a rendered Cow. The dae file of this cow is about 358 KB large. Traditonally, rendering this would take about 40 seconds.
-		However, incorporating BVH into our rendering pipeline takes 0.1223 seconds to do. That is about a 99.7% improvement!
+		To highlight the improvement that the BVH makes, below is an image of a rendered Cow. The .dae file of this cow is about 358 KB large. Traditonally, rendering this would take about 40 seconds.
+		However, incorporating BVH into our rendering pipeline takes 0.1223 seconds. That is about a 99.7% improvement!
 
 		<figure>
 			<img src="cow.png" alt="Cornell Boxes with Bunnies" style="width:70%"/>
@@ -161,16 +161,17 @@
 		</figure>
 		<h2>Part 3: Direct Illumination</h2>
 		Next, I implemented 2 different versions of a direct illumination function for introducing light sources into scenes. The first method is a direct lighting function that uses uniform hemisphere sampling.
-		The central idea is to sample incoming light directions uniformly in a hemisphere above the object surface and using Monte Carlo Estimation to calculate each sample's BSDF contribution and average across all samples to find our outgoing illumination vector.
+		The central idea is to sample incoming light directions uniformly in a hemisphere above the object surface and using the Monte Carlo Estimation to calculate each sample's BSDF contribution and average across all samples to find our outgoing illumination vector.
 		<p>
-		L<sub>out</sub> = (2&pi; / N) &Sigma;<sub>i=1</sub><sup>N</sup>
-		f(w<sub>out</sub>, w<sub>i</sub>) L<sub>i</sub> cos(&theta;<sub>i</sub>)
+		$$
+		L_{\text{out}} = \frac{2\pi}{N} \sum_{i=1}^{N} f(\mathbf{w}_{\text{out}}, \mathbf{w}_i)\, L_i \cos(\theta_i)
+		$$
 		</p>
 		For every sample in the scene, I will uniformly sample the 3D vector representing a light direction, transfer to world coordinates, create its corresponding shadow ray, and check if the shadow is occluded.
-		If so, we'll calculate it's BSDF contribution and average all the samples at the end.
+		If so, we'll calculate it's Bidirectional Scattering Distribution Function (BSDF) contribution and average all the samples at the end.
 		<p>The next method was direct lighting by sampling the "importance" of lights, or sampling only the light directions that hit a point p. The previous method will lead to a noisy output, so the purpose of sampling 
-			by importance is to eliminate noisy features by only considering the light directions that will actually reach a hit point. First we find the 3D vector that's between the light source and hit point,
-			transfer that to the world coordinates. Then we create the corresponding shadow but instead only calculate the BSDF contribution if the shadow is not occluded.
+			by importance is to eliminate noisy features by only considering the light directions that will actually reach a hit point. First we find the 3D vector that's between the light source and hit point and
+			transfer it to the world coordinates. Then we create the corresponding shadow but instead only calculate the BSDF contribution if the shadow is not occluded.
 		</p>
 		<p>The following images are the same scene, but one uses the hemisphere sampling whereas the other uses the importance sampling.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
@@ -213,35 +214,30 @@
 			</table>
 		</div>
 		
-		The significant difference between the hemisphere and light sampling is the amount of noise. Due to the hemisphere sampling selecting uniformly at random,
+		The significant difference between the hemisphere and light sampling is the amount of noise. Due to hemisphere sampling selecting uniformly at random,
 		it will incorporate a lot of random noise vectors, which leads to a "fuzzier" image quality (the black spots all over the scene). Light sampling will only consider
 		light directions that make contact with a surface, therefore eliminating the random patches of black in the image and producing a clearer scene. Where hemisphere sampling excels
-		is that it will work for all lighting types and will produce a unbiased estimate of radiance, however for scene creation the light sampling is the better choice.
+		is that it will work for all lighting types and will produce a unbiased estimate of radiance. However, the light sampling is the clear better choice in regards to general scene creation.
 
 		<h2>Part 4: Global Illumination</h2>
 		To extend the previous part regarding direct illumination methods, this part centers on Global illumination which we now also account for indirect illumination. 
 		First I made a new sampling method that not only returns the proportion of incoming light scattered from
 		an indicent direction to an outgoing direction, but also updates the Probability Density Function (PDF) of the sample. This lets us calculate the unbiased Monte Carlo Estimation for indirect lighting:
-		<div style="text-align:center; margin: 12px 0;">
-		<i>L</i><sub>o</sub>(p, &omega;<sub>o</sub>) = <i>L</i><sub>e</sub>(p, &omega;<sub>o</sub>) +
-		&int;<sub>&Omega;</sub>
-		<i>f</i><sub>r</sub>(&omega;<sub>o</sub>, &omega;<sub>i</sub>)
-		<i>L</i><sub>i</sub>(p, &omega;<sub>i</sub>)
-		cos(&theta;<sub>i</sub>) d&omega;<sub>i</sub>
-		</div>
+		<p>
+		$$
+		L_o(p, \omega_o) = L_e(p, \omega_o) + \int_{\Omega} f_r(\omega_o, \omega_i)\, L_i(p, \omega_i)\, \cos\theta_i \, d\omega_i
+		$$
+		</p>
 
-		<div style="text-align:center; margin: 12px 0;">
-		<i>L</i><sub>o</sub> &asymp; <i>L</i><sub>e</sub> +
-		(
-		<i>f</i><sub>r</sub>(&omega;<sub>o</sub>, &omega;<sub>i</sub>)
-		<i>L</i><sub>i</sub>(&omega;<sub>i</sub>)
-		cos(&theta;<sub>i</sub>)
-		) / pdf(&omega;<sub>i</sub>)
-		</div>
+		<p>
+		$$
+		L_o \approx L_e + \frac{f_r(\omega_o, \omega_i)\, L_i(\omega_i)\, \cos\theta_i}{\text{pdf}(\omega_i)}
+		$$
+		</p>
 		Then I develop a recursive function that will now also account for whether we want light to accumulate to a max depth. For a base case,
-		we use the previous one bounce radiance method from the last part if the ray depth is 0 or 1. Otherwise we use our new sampling function to get a new direction, transfer that to world space,
-		spawn a new ray from the hit point in this direction, recursively evaluate the incoming radiance from that ray, and finally Weight the contribution using the BSDF, cosine term, and PDF. 
-		If we want light to accumulate, we will sum up each vector returned from the recursive calls, otherwise we return the final vector returned.
+		we use the previous one bounce radiance method from the last part if the ray depth is 0 or 1. Otherwise, we use our new sampling function to get a new direction, transfer that to world space,
+		spawn a new ray from the hit point in this direction, recursively evaluate the incoming radiance from that ray, and finally weigh the contribution using the BSDF, cosine term, and PDF. 
+		If we want light to accumulate, we will sum up each vector returned from the recursive calls, otherwise we return the final vector computed.
 		<p>Below highlights a short example between direct and indirect illumination with the Sphere Scene</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -258,8 +254,8 @@
 			</table>
 		</div>
 		<p>Here is a comparsion of CBunny.dae between different max depths and accumulation bounce settings. The sample per pixel rate is 1024 across all images.
-			Notice for the 2 max depth images is when the bounce accumulation starts to considerably change the output. Incoporating bounce accumulations
-			leads to an overall brighter scene, however took much longer to render. These differences are more noticable as we move upward to 3 bounces, as the
+			Notice for the max_depth = 2 images is when the bounce accumulation starts to considerably change the output. Incoporating bounce accumulations
+			leads to an overall brighter scene, however took much longer to render. These differences are more noticable as we move upward to max_depth = 3, as the
 			no accumulation bounce scene is even dimmer, and the accumulation bounce scene is even brighter. These images took longer to render than the 2nd bounce images as well.
 			Overall, increasing the ray depth and including bounce accumulation leads to a brighter light source that unbiasedly lights the scene.
 		</p>
@@ -268,68 +264,68 @@
 				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_0_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 0, Accumulation Bounces Off)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 0, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_0_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 0, Accumulation Bounces On)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 0, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_1_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 1, Accumulation Bounces Off)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 1, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_1_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 1, Accumulation Bounces On)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 1, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_2_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 2, Accumulation Bounces Off)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 2, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_2_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 2, Accumulation Bounces On)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 2, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_3_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 3, Accumulation Bounces Off)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 3, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_3_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 3, Accumulation Bounces On)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 3, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_4_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 4, Accumulation Bounces Off)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 4, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_4_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 4, Accumulation Bounces On)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 4, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
 				<tr>
 					<td style="text-align: center;">
 						<img src="task4_CB_F_5_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 5, Accumulation Bounces Off)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 5, Accumulation Bounces Off)</figcaption>
 					</td>
 					<td style="text-align: center;">
 						<img src="task4_CB_T_5_1024.png" width="400px"/>
-						<figcaption>CBbunny.dae (max depth = 5, Accumulation Bounces On)</figcaption>
+						<figcaption>CBbunny.dae (max_depth = 5, Accumulation Bounces On)</figcaption>
 					</td>
 				</tr>
 			</table>
 		</div>
-		<p>Here is CBunny.dae using Russian Roulette global illumination with different max depths. The Russian Roulette algorithm differs from
-			our traditional global illumination method, as it now incoporates random termination of rays depending on a constant probability. At each bounce beyond a certain depth,
-			a ray will be terminated with probability p. If a ray is not terminated, it's intensity is increased to compensate for the loss of rays.
+		<p>Here is CBunny.dae using a "Russian Roulette" global illumination model with different max depths. The Russian Roulette algorithm differs from
+			our traditional global illumination method, as it now incoporates the random termination of rays depending on a constant probability. At each bounce beyond a certain depth,
+			a ray will be terminated with probability (\p)\. If a ray is not terminated, its intensity is increased to compensate for the loss of rays.
 			This reduces the computation time from the previous method, while still maintaining its ability to light a scene without bias. For these images, I use a termination probability of 0.4 or 40% of samples.
 		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
@@ -409,7 +405,7 @@
 		<h2>Part 5: Adaptive Sampling</h2>
 		One big problem with the current global illumination methods is the noise that they can generate. One way to conteract this is to decrease the number of samples per pixel. However, some pixels will actually converge faster
 		than other pixels, so we don't have to do this for every pixel. Adaptive sampling is the solution to high sample counts for pixels, and concentrating samples in the more difficult parts of the image.
-		To implement this, I modified the raytrace pixel method discussed in part 1 to calculate the mean (&mu;) and standard deviation (&sigma;) using variables s1 and s2:
+		To implement this, I modified the raytrace pixel method discussed in part 1 to calculate the mean (&mu;) and standard deviation (&sigma;) using variables s<sub>1</sub> and s<sub>2</sub>:
 		<p>
 		$$
 		s_1 = \sum_{k=1}^{n} x_k
@@ -422,24 +418,29 @@
 		$$
 		</p>
 		<p>
-		x_k is the illuminance of sample k that was already found from part 1. Using these values, I compute the sample mean (&mu;) and variance (&sigma;<sup>2</sup>) as:
-		</p>
-		<div style="text-align: center; font-size: 20px;">
-		&mu; = s<sub>1</sub> / n
-		</div>
-		<div style="text-align: center; font-size: 20px;">
-		&sigma;<sup>2</sup> = (1 / (n - 1)) (s<sub>2</sub> - (s<sub>1</sub><sup>2</sup> / n))
-		</div>
+		x<sub>k</sub> is the illuminance of sample (\k\) that was already found from part 1. Using these values, I compute the sample mean (&mu;) and variance (&sigma;<sup>2</sup>) as:
 		<p>
-		Every <code>samplesPerBatch</code> samples, I estimate the confidence interval of the pixel using:
+		$$
+		\mu = \frac{s_1}{n}
+		$$
 		</p>
-		<div style="text-align: center; font-size: 20px;">
-		I = 1.96 * (&sigma; / &radic;n)
-		</div>
-		This gives a 95% confidence interval for the estimated pixel value. If the interval is sufficiently small relative to the mean (i.e., I &lt;= maxTolerance * &mu;), then the pixel is considered to have converged and sampling stops early.
-		Sampling continues until the convergence threshold is met or the maximum number of samples is reached. The Pixel color is set to the computed mean, and the number of samples is recorded for visualization.
 
-		<p>The following images are 2 example scenes, a dragon and coil in the room. The images to the right represent the sample rate of both scenes. Red represents a high sampling rate and green represent low sampling rates.
+		<p>
+		$$
+		\sigma^2 = \frac{1}{n-1} \left(s_2 - \frac{s_1^2}{n}\right)
+		$$
+		</p>
+		Every <code>samplesPerBatch = 32</code> samples, I estimate the confidence interval of the pixel using:
+		</p>
+		<p>
+		$$
+		I = 1.96 \cdot \frac{\sigma}{\sqrt{n}}
+		$$
+		</p>
+		This gives a 95% confidence interval for the estimated pixel value. If the interval is sufficiently small relative to the mean (i.e., I &lt;= maxTolerance * &mu;), then the pixel is considered to have converged and sampling stops early.
+		Sampling continues until the convergence threshold is met or the maximum number of samples is reached. The pixel color is set to the computed mean, and the number of samples is recorded for visualization.
+
+		<p>The following images are 2 example scenes, a dragon and coil in the room. The images to the right represent the sample rate of both scenes. Red represents a high sampling rate and green represents a low sampling rate.
 			Both scenes use 2048 samples per pixel, 1 sample per light, and a max ray depth of 5.
 		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">

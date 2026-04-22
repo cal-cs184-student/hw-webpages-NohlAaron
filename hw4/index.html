@@ -51,7 +51,7 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Part 1: Masses and springs</h2>
-		TODO: Add implementation and fix 3rd SS
+		TODO: Fix 3rd SS?
 		<p>For the first part of this assignment, I designed a function that will take a cloth's parameters and build an evenly spaced grid of masses and springs. This function is split into 2 parts: building mass and building springs.
 		To build the mass portion, I iterate through every grid location and convert their coordinates into normalized coordinates u and v. For horizontal cloths, I place the point mass at (X, 1, Y). Otherwise I place it at (X, Y, z) where z is a small offset.</p>
 		<p>Then for the spring portion, I iterate through each point mass again and connnect them to the following neighbors based on the constaints below:</p>
@@ -79,7 +79,59 @@
 		</div>
 
 		<h2>Part 2: Simulation via numerical integration</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		TODO: explain the algorithm
+		TODO: Differences in ks
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw4_2_ks1.png" width="400px"/>
+				  <figcaption>ks = 1000 N * m^-1</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw4_ks2.png" width="400px"/>
+				  <figcaption>ks = 10000 N * m^-1</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		TODO: Differences in density
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw4_2_den1.png" width="400px"/>
+				  <figcaption>Density = 5 g * cm^-2</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw4_den2.png" width="400px"/>
+				  <figcaption>Density = 30 g * cm^-2</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		TODO: Differences in damping
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw4_2_dam1.png" width="400px"/>
+				  <figcaption>Damping = 0.04%</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw4_2_dam2.png" width="400px"/>
+				  <figcaption>Damping = 0.6%</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+
+		Here is a final render of the cloth using 4 pins.
+		<figure>
+			<img src="cs184_hw4_2_fin.png" alt="Cloth draped over sphere" style="width:70%"/>
+			<figcaption>pinned4.json (Density = 5 g * cm^-2, ks = 1000 N * m^-1, Damping = 0.05%)</figcaption>
+		</figure>
+		
 
 		<h2>Part 3: Handling collisions with other objects</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

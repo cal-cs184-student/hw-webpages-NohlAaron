@@ -52,6 +52,12 @@
 
 		<h2>Part 1: Masses and springs</h2>
 		TODO: Add implementation and fix 3rd SS
+		<p>For the first part of this assignment, I designed a function that will take a cloth's parameters and build an evenly spaced grid of masses and springs. This function is split into 2 parts: building mass and building springs.
+		To build the mass portion, I iterate through every grid location and convert their coordinates into normalized coordinates u and v. For horizontal cloths, I place the point mass at (X, 1, Y). Otherwise I place it at (X, Y, z) where z is a small offset.</p>
+		<p>Then for the spring portion, I iterate through each point mass again and connnect them to the following neighbors based on the constaints below:</p>
+		<p>Left and Above Neighbors => Structual Spring</p>
+		<p>Upper Left and Upper Right Neighbors => Shearing Spring</p>
+		<p>Two-Left and Two-Above Neighbors => Bending Spring</p>
 		<p>Here are some screenshots of a basic mass and spring grid. Notice the shearing constraint removes the diagonal lines within the squares, and all 3 constraints will destroy the grid.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">

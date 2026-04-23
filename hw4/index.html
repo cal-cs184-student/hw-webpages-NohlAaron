@@ -158,8 +158,8 @@
 		Handling sphere collosion required a collide function in the sphere datastructure to be filled in. This function has to take a point and adjusts its position if it collides with or is inside a sphere.
 		First, it will compute the vector between the point mass and the sphere's origin, and "bump" it to the sphere's surface if it intersects. Otherwise, it will skip the point
 		Afterwards, it will get the vector's tangent point to the sphere in order to compute a correction vector. The function will adjust the point mass' position by the correction vector scaled down to (1 - friction).
-		\[ correction_vector = tangent_point - last_position \]
-		\[ position = last_position + correction_vector * (1 - f)\]
+		\[ correction vector = tangent point - last position \]
+		\[ position = last position + correction vector * (1 - f)\]
 		<p>The following images are different sphere collosion tests with the default ks value (5000), a low ks value (500), and a high ks value (50000).
 			As we saw in the last part, higher ks values leads to stronger springs comprising the cloth grid, which will lead to the cloth able to hold its shape better as the simulator handles the sphere collosion.
 		</p>

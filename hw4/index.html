@@ -79,8 +79,19 @@
 		</div>
 
 		<h2>Part 2: Simulation via numerical integration</h2>
-		TODO: explain the algorithm
-		TODO: Differences in ks
+		After modeling our cloth as a grid of masses and springs, the cloth needs to now handle forces being applied to it's point masses to show bending. 
+		To do this we need to integrate the physical equations of motion and apply those to each point mass. First, we compute the total external forces and apply it to each point mass.
+		Then we iterate through each spring and apply a spring correction force to the point masses.
+		\[ F_{ext} = ma \]
+		\[ F_{s} = k_{s} * (||p_{b} - p_{a}|| - l)\]
+
+		<p>k_{s} is the spring constant, p_{b} and p_{a} are the 2 masses on the springs' ends, and l is the spring's rest length</p>
+		<p>Next, we apply Verlet Integration to compute new point mass positions. For each unpinned point mass, we will update its position using the following</p>
+		\[x_{t+dt} = x_{t} + (1 - d) * (x_{t} - x_{t-dt}) + a_{t}*dt^2 \]
+		<p>d is a damping term between 0 and 1. Finally, we will constrain the spring changes such that the spring length does not increase by more than 10%.</p>
+		<p>Below is a series of different images showcasing how a cloth falls with 2 pinned corners using different parameters. This set shows differences between
+			a low and high spring constant values.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -95,7 +106,7 @@
 			  </tr>
 			</table>
 		</div>
-		TODO: Differences in density
+		<p>This set shows differences betweena low and high density values.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -110,7 +121,7 @@
 			  </tr>
 			</table>
 		</div>
-		TODO: Differences in damping
+		<p>This set shows differences betweena low and high damping values.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -126,7 +137,7 @@
 			</table>
 		</div>
 
-		Here is a final render of the cloth using 4 pins.
+		Here is a final render of the cloth using 4 pins. Parameters are listed in the title.
 		<figure>
 			<img src="cs184_hw4_2_fin.png" alt="Cloth draped over sphere" style="width:70%"/>
 			<figcaption>pinned4.json (Density = 5 g * cm^-2, ks = 1000 N * m^-1, Damping = 0.05%)</figcaption>

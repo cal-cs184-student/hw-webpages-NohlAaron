@@ -154,7 +154,15 @@
 		
 
 		<h2>Part 3: Handling collisions with other objects</h2>
-		TODO: Explain implementations of work for sphere and plane collisions
+		This part centers on handling collosions with standard shapes in the simulation space. The first object that I added cloth collision for was spheres.
+		Handling sphere collosion required a collide function in the sphere datastructure to be filled in. This function has to take a point and adjusts its position if it collides with or is inside a sphere.
+		First, it will compute the vector between the point mass and the sphere's origin, and "bump" it to the sphere's surface if it intersects. Otherwise, it will skip the point
+		Afterwards, it will get the vector's tangent point to the sphere in order to compute a correction vector. The function will adjust the point mass' position by the correction vector scaled down to (1 - friction).
+		\[ correction_vector = tangent_point - last_position \]
+		\[ position = last_position + correction_vector * (1 - f)\]
+		<p>The following images are different sphere collosion tests with the default ks value (5000), a low ks value (500), and a high ks value (50000).
+			As we saw in the last part, higher ks values leads to stronger springs comprising the cloth grid, which will lead to the cloth able to hold its shape better as the simulator handles the sphere collosion.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -173,7 +181,11 @@
 			  </tr>
 			</table>
 		</div>
-		TODO explain the plane collisions
+		<p>The next collosion method implemented was one to handle plane collisions. Instead, this collision function will detect to see if the point mass crossed the Plane.
+			If a point crosses a plane, we will "bump" it up to the surface. We'll compute the tangent point and compute a correction vector. However, to reach a point slightly
+			above the tangent point before crossing the plane, we will also apply a small surface offset value to the correction vector. Then we will update the point mass' position with the correction
+			vector scaled by (1 - friction). Below shows our cloth as a wireframe laying flat on a plane.
+		</p>
 		<figure>
 			<img src="cs184_hw4_3_pl.png" alt="Cloth draped over sphere" style="width:70%"/>
 			<figcaption>Plane laying flat on surface</figcaption>

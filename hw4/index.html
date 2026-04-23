@@ -85,12 +85,13 @@
 		\[ F_{ext} = ma \]
 		\[ F_{s} = k_{s} * (||p_{b} - p_{a}|| - l)\]
 
-		<p>k_{s} is the spring constant, p_{b} and p_{a} are the 2 masses on the springs' ends, and l is the spring's rest length</p>
+		<p>$k_s$ is the spring constant, $p_b$ and $p_a$ are the 2 masses on the springs' ends, and l is the spring's rest length</p>
 		<p>Next, we apply Verlet Integration to compute new point mass positions. For each unpinned point mass, we will update its position using the following</p>
 		\[x_{t+dt} = x_{t} + (1 - d) * (x_{t} - x_{t-dt}) + a_{t}*dt^2 \]
 		<p>d is a damping term between 0 and 1. Finally, we will constrain the spring changes such that the spring length does not increase by more than 10%.</p>
 		<p>Below is a series of different images showcasing how a cloth falls with 2 pinned corners using different parameters. This set shows differences between
-			a low and high spring constant values.
+			a low and high spring constant values. One key difference between these a low density and a high density is how the middle portion collapses. The lower density
+			leads to weaker springs and therefore dips farther, whereas a higher density leads to a more upright cloth.
 		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -106,7 +107,9 @@
 			  </tr>
 			</table>
 		</div>
-		<p>This set shows differences betweena low and high density values.</p>
+		<p>This set shows differences betweena low and high density values. Varying density had a similar effect to varying the spring constaints
+			as a lower density allowed for a more relaxxed and spaced springs, whereas a higher density tried to compact the springs closer together as it collapses.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -121,7 +124,9 @@
 			  </tr>
 			</table>
 		</div>
-		<p>This set shows differences betweena low and high damping values.</p>
+		<p>This set shows differences betweena low and high damping values. The significant change for varying damping was actually the time it took to collapse.
+			A high damping rate had slowed the falling process significantly, unlike a low damping rate that allowed the cloth to quickly fall to rest.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>

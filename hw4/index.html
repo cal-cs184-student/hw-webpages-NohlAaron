@@ -270,8 +270,24 @@
 		</div>
 
 		<h2>Part 5: Shaders</h2>
-		TODO: Explanation for what a shader program is and how vertex and fragment shaders work together.
-		<p>TODO: Explain phong shading</p>
+		In this part, I experiment with different shader programs built within the GPU. A shader is a program that will run in parallel on the GPU during the graphics pipeline.
+		The shader program will take an input and output a 4 dimensional vector, which represents a color that will resemble shading on objects or special textures. 
+		This part will go over 2 different shader types: vertex and fragment. A vertex shader will modify
+		geometric properties like positions and normal vectors, and will store varyings for use in the fragment shader. Fragment shaders will take geometric
+		attributes of the fragment calculated by the vertex shader, and compute a color to apply to pixels.
+		<p>The first shading option I implemented was a Blinn-Phong shading model. The overall idea of Blinn-Phong is to utilize this equation to calculate the final vector:</p>
+		\[
+		L = \text{Ambient} + \text{Diffuse} + \text{Specular}
+		\]
+
+		\[
+		L = k_a I_a + k_d \frac{I}{r^2} \max(0, \mathbf{n} \cdot \mathbf{l}) + k_s \frac{I}{r^2} \max(0, \mathbf{n} \cdot \mathbf{h})^p
+		\]
+		<p>\( \frac{I}{r^2} \) represents the attenuated light intensity, where \( I \) is the light’s intensity and \( r \) is the distance from the light source.
+			The dot products represent the angles between the surface normal and the light direction (\( \mathbf{n} \cdot \mathbf{l} \)) and between the surface normal and the half-vector (\( \mathbf{n} \cdot \mathbf{h} \)). The half-vector \( \mathbf{h} \) is defined as the normalized average of the light direction and the view direction.
+			$k_a$, $k_d$, $k_s$, $I_a$, and p are all constants that control the strength of each component. These are tuned by me within the script. 
+			Below I show the cloth and sphere simulation using the different elements of the Blinn-Phong model.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -296,12 +312,41 @@
 			  </tr>
 			</table>
 		</div>
-		<p>TODO: briefly explain texture mapping</p>
+		<p>The next method I implemented was texture mapping, which will take a custom texture as a png and apply it to objects in the space.
+			For this example, I use a photo of my dog to showcase the mapping working on our cloth and sphere simulation.
+		</p>
 		<figure>
 			<img src="cs184_hw4_5_texture.png" alt="Cloth draped over sphere" style="width:70%"/>
 			<figcaption>My Dog on the Ball and Cloth</figcaption>
 		</figure>
-		<p>TODO: briefly explain bump and displacement.</p>
+		<p>Knuckles helps a lot for the next methods as well, but mainly because the photo features a wooded floor and fuzzy bean bag. 
+			Bump mapping and Displacement mapping will modify the Blinn-Phong model from earlier. 
+			Bump Mapping will perturb the surface normals by building a tangent-bitangent-normal matrix (TBN), then computing the following in (u,v):
+		</p>
+		\[
+		dU = \left(h\left(u + \frac{1}{w}, v\right) - h(u, v)\right) \cdot k_h \cdot k_n
+		\]
+		\[
+		dV = \left(h\left(u, v + \frac{1}{h}\right) - h(u, v)\right) \cdot k_h \cdot k_n
+		\]
+		\[
+		\mathbf{n_o} = (-dU, -dV, 1)
+		\]
+		\[
+		\mathbf{n_d} = \text{TBN} \cdot \mathbf{n_o}
+		\]
+		<p>	h(u,v) is a function that will return the height encoded in the height map by (u,v). $k_h$ is a height scaling factor, $k_n$ is a normal scaling factor. 
+			$n_d$ is the space normal that will be passed into the Blinn-Phong Model.
+		</p>
+		<p>
+			Displacement mapping will use the bump.frag model, and instead use a modified vertex shader that will displace the vertex positions in their original directions by the scaling variable:
+		</p>
+		\[
+		\mathbf{p'} = \mathbf{p} + \mathbf{n} \cdot h(u, v) \cdot k_h
+		\]
+		<p>
+			Below showcases Knuckles being used in combination with Bump Mapping and Displacement Mapping.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -316,7 +361,7 @@
 			  </tr>
 			</table>
 		</div>
-		<p>TODO: Compare how both react to sphere Mesh Coarseness</p>
+		<p>As seen from above, </p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -341,7 +386,9 @@
 			  </tr>
 			</table>
 		</div>
-		<p>TODO: showcase the mirror shader</p>
+		<p>Finally, I implement a mirror shader, which will compute a reflection vector from the surface normal and view direction.
+			It will sample an environment map in the direction of the reflection vector, which results in displaying a reflective surface.
+		</p>
 		<figure>
 			<img src="cs184_hw4_5_mirror.png" alt="Cloth draped over sphere" style="width:70%"/>
 			<figcaption>Mirror Shader</figcaption>
@@ -350,16 +397,6 @@
 		<h2>(Optional) Part 6: Extra Credit - Additional cloth simulation features!</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 		
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
 		</div>
 	</body>
 </html>

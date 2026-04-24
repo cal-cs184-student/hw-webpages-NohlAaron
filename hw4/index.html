@@ -192,7 +192,25 @@
 		</figure>
 
 		<h2>Part 4: Handling self-collisions</h2>
-		TODO: Explain the self collision implementation. Compare the following images
+		The final collision feature implemented was the self collision procedure. To do this, I use an spatial hashing method, which will
+		build a hashtable that maps a float to a vector of point masses The float represents a 3D volume in the scene and the vector stores
+		point masses in that 3D space.
+		<p>First, the Cloth data structure now features a hash_position function, which will be what maps a point mass' position
+			to the 3D volume float. It was paritition the space into 3D boxes of the following size:
+		</p>
+		\[ Volume = w * h * t \]
+		\[ w = 3 * width / width_num_points \]
+		\[ h = 3 * height / height_num_points \]
+		\[ t = max(w, h) \]
+		<p>The point mass is truncated to the closest 3D box, and each element of the coordinate is scaled by large distinct prime numbers to ensure unique key creation.
+			Next, we build a function that will build the spatial map by calling hash_position() on every point mass. Finally, the cloth structure also uses a self_collide()
+			method that will use the hash table to separate points that are too close. It will assess a point mass and its potential candidate points and determine if any candidate points
+			are within double the cloth thickness from the point mass. If so, it will apply a correction vector to the point mass' position to separate them. If there are multiple, the function
+			will average all the correction vectors and scale the result by total number of simulation steps.
+		</p>
+		<p>Below are a series of images showcasing 3 different stages of the cloth falling on itself. One thing to note is that due to the given SURFACE_OFFSET in the plane structure,
+			there is some clipping between the cloth and the plane. I had to increase it in order to minimize a significant amount of clipping.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -211,7 +229,11 @@
 			  </tr>
 			</table>
 		</div>
-		TODO: Explain varying ks
+		<p>Similar to part 2, I also did tests with varied spring constants and density values. For varying spring constants, we find that the low spring constant leads to weaker 
+			springs, which will cause the cloth to feature more folds over itself as it falls. A bigger spring constant will have less folds, but feature much bigger folds instead.
+			The density test similarily, follows the same trend as it did in part 2, as a lower density meant less points of self collision, and we would begin to see more folds as we scale
+			density towards infinity.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>

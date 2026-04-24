@@ -85,7 +85,7 @@
 		\[ F_{ext} = ma \]
 		\[ F_{s} = k_{s} * (||p_{b} - p_{a}|| - l)\]
 
-		<p>$k_s$ is the spring constant, $p_b$ and $p_a$ are the 2 masses on the springs' ends, and l is the spring's rest length</p>
+		<p>k_{s} is the spring constant, p_{b} and p_{a} are the 2 masses on the springs' ends, and l is the spring's rest length</p>
 		<p>Next, we apply Verlet Integration to compute new point mass positions. For each unpinned point mass, we will update its position using the following</p>
 		\[x_{t+dt} = x_{t} + (1 - d) * (x_{t} - x_{t-dt}) + a_{t}*dt^2 \]
 		<p>d is a damping term between 0 and 1. Finally, we will constrain the spring changes such that the spring length does not increase by more than 10%.</p>
@@ -285,7 +285,7 @@
 		\]
 		<p>\( \frac{I}{r^2} \) represents the attenuated light intensity, where \( I \) is the light’s intensity and \( r \) is the distance from the light source.
 			The dot products represent the angles between the surface normal and the light direction (\( \mathbf{n} \cdot \mathbf{l} \)) and between the surface normal and the half-vector (\( \mathbf{n} \cdot \mathbf{h} \)). The half-vector \( \mathbf{h} \) is defined as the normalized average of the light direction and the view direction.
-			$k_a$, $k_d$, $k_s$, $I_a$, and p are all constants that control the strength of each component. These are tuned by me within the script. 
+			k_{a}, k_{d}, k_{s}, I_{a}, and p are all constants that control the strength of each component. These are tuned by me within the script. 
 			Below I show the cloth and sphere simulation using the different elements of the Blinn-Phong model.
 		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
@@ -335,8 +335,8 @@
 		\[
 		\mathbf{n_d} = \text{TBN} \cdot \mathbf{n_o}
 		\]
-		<p>	h(u,v) is a function that will return the height encoded in the height map by (u,v). $k_h$ is a height scaling factor, $k_n$ is a normal scaling factor. 
-			$n_d$ is the space normal that will be passed into the Blinn-Phong Model.
+		<p>	h(u,v) is a function that will return the height encoded in the height map by (u,v). k_{h} is a height scaling factor, k_{n} is a normal scaling factor. 
+			n_{d} is the space normal that will be passed into the Blinn-Phong Model.
 		</p>
 		<p>
 			Displacement mapping will use the bump.frag model, and instead use a modified vertex shader that will displace the vertex positions in their original directions by the scaling variable:
@@ -361,7 +361,11 @@
 			  </tr>
 			</table>
 		</div>
-		<p>As seen from above, </p>
+		<p>As seen from above, The wood texture appears along the edges while the bean bag fuz sits along the top of the cloth. 
+			Bump mapping will maintain the overall shape of the cloth, whereas displacement mapping will distort the cloth geometry along the pieces of the texturing.
+			We see these effects much clear when adjust the sphere coarseness, as a higher sphere coarseness results in more defined texutring in bump mapping, 
+			and more geometry distortion in the displacement mapping.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>

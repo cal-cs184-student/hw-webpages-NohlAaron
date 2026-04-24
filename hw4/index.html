@@ -63,8 +63,8 @@
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="cs184_hw4_1_1.png" width="400px"/>
-				  <figcaption>Mass and Spring Grid</figcaption>
+				  <img src="cs184_hw4_1_3.png" width="400px"/>
+				  <figcaption>All Enabled</figcaption>
 				</td>
 				<td style="text-align: center;">
 				  <img src="cs184_hw4_1_2.png" width="400px"/>
@@ -74,8 +74,8 @@
 			</table>
 		</div>
 		<figure>
-			<img src="cs184_hw4_1_3.png" alt="Cloth draped over sphere" style="width:70%"/>
-			<figcaption>All enabled</figcaption>
+			<img src="cs184_hw4_1_1.png" alt="Cloth draped over sphere" style="width:70%"/>
+			<figcaption>Mass and Spring Grid</figcaption>
 		</figure>
 
 		<h2>Part 2: Simulation via numerical integration</h2>
@@ -85,7 +85,7 @@
 		\[ F_{ext} = ma \]
 		\[ F_{s} = k_{s} * (||p_{b} - p_{a}|| - l)\]
 
-		<p>k_{s} is the spring constant, p_{b} and p_{a} are the 2 masses on the springs' ends, and l is the spring's rest length</p>
+		<p>\(k_{s}\) is the spring constant, \(p_{b}\) and \(p_{a}\) are the 2 masses on the springs' ends, and l is the spring's rest length</p>
 		<p>Next, we apply Verlet Integration to compute new point mass positions. For each unpinned point mass, we will update its position using the following</p>
 		\[x_{t+dt} = x_{t} + (1 - d) * (x_{t} - x_{t-dt}) + a_{t}*dt^2 \]
 		<p>d is a damping term between 0 and 1. Finally, we will constrain the spring changes such that the spring length does not increase by more than 10%.</p>
@@ -164,13 +164,13 @@
 		<p>The following images are different sphere collosion tests with the default ks value (5000), a low ks value (500), and a high ks value (50000).
 			As we saw in the last part, higher ks values leads to stronger springs comprising the cloth grid, which will lead to the cloth able to hold its shape better as the simulator handles the sphere collosion.
 		</p>
+		<figure>
+			<img src="cs184_hw4_3_ks1.png" alt="Cloth draped over sphere" style="width:70%"/>
+			<figcaption>sphere.json (ks = 5000)</figcaption>
+		</figure>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
-				<td style="text-align: center;">
-				  <img src="cs184_hw4_3_ks1.png" width="400px"/>
-				  <figcaption>sphere.json (ks = 5000)</figcaption>
-				</td>
 				<td style="text-align: center;">
 				  <img src="cs184_hw4_3_ks2.png" width="400px"/>
 				  <figcaption>sphere.json (ks = 500)</figcaption>
@@ -182,6 +182,7 @@
 			  </tr>
 			</table>
 		</div>
+		
 		<p>The next collosion method implemented was one to handle plane collisions. Instead, this collision function will detect to see if the point mass crossed the Plane.
 			If a point crosses a plane, we will "bump" it up to the surface. We'll compute the tangent point and compute a correction vector. However, to reach a point slightly
 			above the tangent point before crossing the plane, we will also apply a small surface offset value to the correction vector. Then we will update the point mass' position with the correction
@@ -227,13 +228,13 @@
 				  <img src="cs184_hw4_4_2.png" width="400px"/>
 				  <figcaption>Cloth mid Falling</figcaption>
 				</td>
-				<td style="text-align: center;">
-				  <img src="cs184_hw4_4_3.png" width="400px"/>
-				  <figcaption>Cloth fully self-collapsed</figcaption>
-				</td>
 			  </tr>
 			</table>
 		</div>
+		<figure>
+			<img src="cs184_hw4_4_3.png" alt="Cloth draped over sphere" style="width:70%"/>
+			<figcaption>Cloth fully self-collapsed</figcaption>
+		</figure>
 		<p>Similar to part 2, I also did tests with varied spring constants. For varying spring constants, we find that the low spring constant leads to weaker 
 			springs, which will cause the cloth to feature more folds over itself as it falls. A bigger spring constant will have less folds, but feature much bigger folds instead.
 		</p>
@@ -285,7 +286,7 @@
 		\]
 		<p>\( \frac{I}{r^2} \) represents the attenuated light intensity, where \( I \) is the light’s intensity and \( r \) is the distance from the light source.
 			The dot products represent the angles between the surface normal and the light direction (\( \mathbf{n} \cdot \mathbf{l} \)) and between the surface normal and the half-vector (\( \mathbf{n} \cdot \mathbf{h} \)). The half-vector \( \mathbf{h} \) is defined as the normalized average of the light direction and the view direction.
-			k_{a}, k_{d}, k_{s}, I_{a}, and p are all constants that control the strength of each component. These are tuned by me within the script. 
+			\(k_{a}\), \(k_{d}\), \(k_{s}\), \(I_{a}\), and p are all constants that control the strength of each component. These are tuned by me within the script. 
 			Below I show the cloth and sphere simulation using the different elements of the Blinn-Phong model.
 		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
@@ -335,7 +336,7 @@
 		\[
 		\mathbf{n_d} = \text{TBN} \cdot \mathbf{n_o}
 		\]
-		<p>	h(u,v) is a function that will return the height encoded in the height map by (u,v). k_{h} is a height scaling factor, k_{n} is a normal scaling factor. 
+		<p>	h(u,v) is a function that will return the height encoded in the height map by (u,v). \(k_{h}\) is a height scaling factor, \(k_{n}\) is a normal scaling factor. 
 			\(n_{d}\) is the space normal that will be passed into the Blinn-Phong Model.
 		</p>
 		<p>

@@ -158,8 +158,9 @@
 		Handling sphere collosion required a collide function in the sphere datastructure to be filled in. This function has to take a point and adjusts its position if it collides with or is inside a sphere.
 		First, it will compute the vector between the point mass and the sphere's origin, and "bump" it to the sphere's surface if it intersects. Otherwise, it will skip the point
 		Afterwards, it will get the vector's tangent point to the sphere in order to compute a correction vector. The function will adjust the point mass' position by the correction vector scaled down to (1 - friction).
-		\[ correction vector = tangent point - last position \]
-		\[ position = last position + correction vector * (1 - f)\]
+		\[ Correction Vector = Tangent Point - Last Position \]
+		\[ Position = Last Position + Correction Vector * (1 - f)\]
+
 		<p>The following images are different sphere collosion tests with the default ks value (5000), a low ks value (500), and a high ks value (50000).
 			As we saw in the last part, higher ks values leads to stronger springs comprising the cloth grid, which will lead to the cloth able to hold its shape better as the simulator handles the sphere collosion.
 		</p>
@@ -199,8 +200,12 @@
 			to the 3D volume float. It was paritition the space into 3D boxes of the following size:
 		</p>
 		\[ Volume = w * h * t \]
-		\[ w = 3 * width / width_num_points \]
-		\[ h = 3 * height / height_num_points \]
+		\[
+		w = \frac{3 \cdot \text{width}}{\text{num\_width\_points}}
+		\]
+		\[
+		h = \frac{3 \cdot \text{height}}{\text{num\_height\_points}}
+		\]
 		\[ t = max(w, h) \]
 		<p>The point mass is truncated to the closest 3D box, and each element of the coordinate is scaled by large distinct prime numbers to ensure unique key creation.
 			Next, we build a function that will build the spatial map by calling hash_position() on every point mass. Finally, the cloth structure also uses a self_collide()
@@ -229,10 +234,8 @@
 			  </tr>
 			</table>
 		</div>
-		<p>Similar to part 2, I also did tests with varied spring constants and density values. For varying spring constants, we find that the low spring constant leads to weaker 
+		<p>Similar to part 2, I also did tests with varied spring constants. For varying spring constants, we find that the low spring constant leads to weaker 
 			springs, which will cause the cloth to feature more folds over itself as it falls. A bigger spring constant will have less folds, but feature much bigger folds instead.
-			The density test similarily, follows the same trend as it did in part 2, as a lower density meant less points of self collision, and we would begin to see more folds as we scale
-			density towards infinity.
 		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
@@ -248,7 +251,9 @@
 			  </tr>
 			</table>
 		</div>
-		TODO: Explain varying density
+		<p>The following images are tests with varied density. Similar to how density behaved in part 2, these tests followed the same trend, 
+			as a lower density meant a stronge resistance to collapsing, and we would begin to see more folds as we increase density.
+		</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>

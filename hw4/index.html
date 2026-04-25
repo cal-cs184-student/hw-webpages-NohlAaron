@@ -11,6 +11,20 @@
 				margin: 0 auto;
 				padding: 60px 20%;
 			}
+			@media print {
+				@page {
+				margin: 0.5in;
+				}
+
+				body {
+				margin: 0;
+				}
+
+				.container {
+				padding: 0;
+				width: 100%;
+				}
+			}
 
 			figure {
 				text-align: center;

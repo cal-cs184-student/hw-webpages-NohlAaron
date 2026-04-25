@@ -48,10 +48,13 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		For the final homework assignment, I develop a real-time cloth simulator that uses masses and springs to build a grid representing cloth.
+		Beyond defining the cloth data structure, I also simulate real-world physics on the cloth using numerical integrate, allowing for the simulator 
+		to display cloth bending, folding, and falling. Finally, I modify other 3D objects in the simulator to handle collisions with cloth, along with enabling
+		the cloth to handle self collisions. This allows for cloths to cover objects and properly fold onto themselves. The most interesting part of this project was 
+		the shaders section, as I learned a lot about how colors can replicate into lighting/shading effects, as well as create unique textures along surfaces.
 
 		<h2>Part 1: Masses and springs</h2>
-		TODO: Fix 3rd SS?
 		<p>For the first part of this assignment, I designed a function that will take a cloth's parameters and build an evenly spaced grid of masses and springs. This function is split into 2 parts: building mass and building springs.
 		To build the mass portion, I iterate through every grid location and convert their coordinates into normalized coordinates u and v. For horizontal cloths, I place the point mass at (X, 1, Y). Otherwise I place it at (X, Y, z) where z is a small offset.</p>
 		<p>Then for the spring portion, I iterate through each point mass again and connnect them to the following neighbors based on the constaints below:</p>
@@ -362,7 +365,7 @@
 			  </tr>
 			</table>
 		</div>
-		<p>As seen from above, The wood texture appears along the edges while the bean bag fuz sits along the top of the cloth. 
+		<p>As seen from above, The wood texture appears along the edges while the bean bag fuz sits along the top of the cloth. This gives the cloth a look that ressembles a bathroom towel.
 			Bump mapping will maintain the overall shape of the cloth, whereas displacement mapping will distort the cloth geometry along the pieces of the texturing.
 			We see these effects much clear when adjust the sphere coarseness, as a higher sphere coarseness results in more defined texutring in bump mapping, 
 			and more geometry distortion in the displacement mapping.
@@ -408,7 +411,35 @@
 		</figure>
 
 		<h2>(Optional) Part 6: Extra Credit - Additional cloth simulation features!</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>For the extra credit portion, I implemented 2 additional features. The first feature is a simple wind feature that adds a light breeze to the simulator.
+			Right before Verlet integration in simulate(), which will initialize a wind force as a direction vector and strength scalar, then apply that force to each point mass
+			to simulate wind. Below shows the plane collision simulation from part 3, but with a displaced cloth due to wind. There is also a video linked at the bottom to show
+			the plane being effected by wind. The wind effects make the cloth sway like a leaf as it falls, and increasing the wind strength will cause it blow the cloth away.
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="cs184_hw4_6_wind1.png" width="400px"/>
+				  <figcaption>Cloth At Rest</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="cs184_hw4_6_wind2.png" width="400px"/>
+				  <figcaption>Cloth Pushed by wind</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		<a href="https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-globalnav-goto" target="_blank">
+  			Video of the Cloth Falling
+		</a>
+		<iframe 
+			src="https://drive.google.com/drive/home?dmr=1&ec=wgc-drive-globalnav-goto"
+			width="640" 
+			height="480" 
+			allow="autoplay">
+		</iframe>
 		
 		</div>
 	</body>
